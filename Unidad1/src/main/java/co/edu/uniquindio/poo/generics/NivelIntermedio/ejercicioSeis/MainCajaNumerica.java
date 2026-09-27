@@ -1,10 +1,11 @@
 package co.edu.uniquindio.poo.generics.NivelIntermedio.ejercicioSeis;
 
+//Clase CajaNumerica<T extends Number>
+// Crear una clase genérica que almacene un
+// número y tenga un metodo doble() que devuelva el doble de su valor.
+
 public class MainCajaNumerica {
-    //Clase CajaNumerica<T extends Number>
-    // Crear una clase genérica que almacene un
-    // número y tenga un metodo doble() que devuelva el doble de su valor.
-    public static void main(String[] args) {
+       public static void main(String[] args) {
 
 
         CajaNumerica<Integer> numeroEntero =

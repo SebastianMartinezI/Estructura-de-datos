@@ -1,4 +1,4 @@
-package co.edu.uniquindio.poo.Enunciados.ejercicioNueve;
+package co.edu.uniquindio.poo.generics.Enunciados.ejercicioNueve;
 
 import java.util.Comparator;
 import java.util.Iterator;

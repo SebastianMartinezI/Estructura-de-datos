@@ -1,6 +1,7 @@
 package co.edu.uniquindio.poo.generics.NivelAvanzado.ejercicioOnce;
 
-public class MainEntidadPersistente {
+public class Main {
+
     //Clase EntidadPersistente<T extends Number & Comparable<T>>
     // Crear una clase que almacene un valor T y permita
     // compararlo con otros objetos del mismo tipo.

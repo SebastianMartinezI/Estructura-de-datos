@@ -1,5 +1,9 @@
 package co.edu.uniquindio.poo.collection.ejercicioCinco;
 
+//Crear una lista de productos de tipo HashMap, otra lista de tipo LinkedHashMap y otra de tipo TreeMap y
+//explicar las diferencias de cada una
+
+
 public class Main {
     public static void main(String[] args) {
 

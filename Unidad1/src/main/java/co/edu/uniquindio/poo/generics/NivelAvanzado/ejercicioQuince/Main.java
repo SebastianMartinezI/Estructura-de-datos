@@ -1,5 +1,8 @@
 package co.edu.uniquindio.poo.generics.NivelAvanzado.ejercicioQuince;
 
+//Clase CalculadoraAvanzada<T extends Number & Comparable<T>>
+//Implementar métodos sumar, restar, maximo y minimo para cualquier tipo numérico comparable (Integer, Double, etc.).
+
 public class Main {
     public static void main(String[] args) {
 

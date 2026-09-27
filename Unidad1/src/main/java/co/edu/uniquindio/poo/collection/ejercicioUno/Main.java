@@ -1,5 +1,8 @@
 package co.edu.uniquindio.poo.collection.ejercicioUno;
 
+//Crear la lista de productos en una clase empresa utilizando treeset,
+//se debe realizar un método que busque un producto por su código.
+
 public class Main {
     public static void main(String[] args) {
 

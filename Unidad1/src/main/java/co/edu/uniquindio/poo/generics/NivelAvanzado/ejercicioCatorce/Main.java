@@ -3,7 +3,7 @@ package co.edu.uniquindio.poo.generics.NivelAvanzado.ejercicioCatorce;
 import java.util.LinkedList;
 import java.util.List;
 
-//14. Clase Ordenador<T extends Comparable<T>>
+//Clase Ordenador<T extends Comparable<T>>
 //Implementar un método ordenar(List<T> lista) que ordene una lista usando el método compareTo.
 
 

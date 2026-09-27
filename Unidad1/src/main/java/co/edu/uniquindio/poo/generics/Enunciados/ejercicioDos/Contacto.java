@@ -1,4 +1,4 @@
-package co.edu.uniquindio.poo.Enunciados.ejercicioDos;
+package co.edu.uniquindio.poo.generics.Enunciados.ejercicioDos;
 
 public class Contacto implements Comparable<Contacto> {
     private String nombre;

@@ -2,6 +2,9 @@ package co.edu.uniquindio.poo.collection.ejercicioQuince;
 
 import java.util.HashMap;
 
+//Un directorio telefónico necesita almacenar nombres junto con sus respectivos números de teléfono y permitir búsquedas eficientes. Para este caso,
+//se usará un HashMap, el cual asociará cada nombre con su número telefónico, posibilitando consultas rápidas y evitando duplicados.
+
 public class Main {
     public static void main(String[] args) {
         HashMap<String, String> directorio = new HashMap<>();

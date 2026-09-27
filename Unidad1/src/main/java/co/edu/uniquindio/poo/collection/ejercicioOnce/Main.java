@@ -2,6 +2,10 @@ package co.edu.uniquindio.poo.collection.ejercicioOnce;
 
 import java.util.LinkedHashSet;
 
+//En una aplicación de música, los usuarios pueden marcar canciones como favoritas. Para garantizar que las canciones favoritas
+//se mantengan en el orden en que fueron añadidas sin permitir duplicados,
+//se empleará un LinkedHashSet, el cual conservará la secuencia de inserción y asegurará que no haya repeticiones.
+
 public class Main {
     public static void main(String[] args) {
         LinkedHashSet<String> favoritas = new LinkedHashSet<>();

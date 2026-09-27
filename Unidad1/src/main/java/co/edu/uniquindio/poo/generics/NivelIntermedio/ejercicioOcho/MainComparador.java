@@ -1,9 +1,10 @@
 package co.edu.uniquindio.poo.generics.NivelIntermedio.ejercicioOcho;
 
+//Clase Comparador<T extends Comparable<T>>
+// Crear una clase genérica con un metodo mayor(T a, T b)
+//  que devuelva el mayor entre dos elementos comparables.
+
 public class MainComparador {
-    //Clase Comparador<T extends Comparable<T>>
-    // Crear una clase genérica con un metodo mayor(T a, T b)
-    //  que devuelva el mayor entre dos elementos comparables.
     public static void main(String[] args) {
 
         Comparador<Integer> comparadorNumero = new Comparador<>();

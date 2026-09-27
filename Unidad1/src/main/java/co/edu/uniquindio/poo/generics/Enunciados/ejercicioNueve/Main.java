@@ -1,5 +1,6 @@
-package co.edu.uniquindio.poo.Enunciados.ejercicioNueve;
-//9.	GestorPedidos con varios criterios de orden
+package co.edu.uniquindio.poo.generics.Enunciados.ejercicioNueve;
+
+//GestorPedidos con varios criterios de orden
 //Definir Pedido (id, cliente, fecha LocalDate, total). GestorPedidos mantiene LinkedList<Pedido> y debe:
 //*Filtrar pedidos de un cliente exacto solo con Iterator.
 //*Orden natural por id (Comparable<Pedido>).

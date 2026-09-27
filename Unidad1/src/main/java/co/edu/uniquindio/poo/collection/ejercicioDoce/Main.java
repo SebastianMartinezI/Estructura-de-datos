@@ -2,6 +2,10 @@ package co.edu.uniquindio.poo.collection.ejercicioDoce;
 
 import java.util.TreeSet;
 
+//En una universidad, los nombres de los estudiantes deben mantenerse ordenados alfabéticamente para facilitar su búsqueda. Para ello,
+//se utilizará un TreeSet, que automáticamente organizará los nombres de los estudiantes
+//a medida que se agregan y permitirá obtener fácilmente el primer y el último nombre de la lista.
+
 public class Main {
     public static void main(String[] args) {
         TreeSet<String> estudiantes = new TreeSet<>();

@@ -1,6 +1,12 @@
-package co.edu.uniquindio.poo.Enunciados.ejercicioNueve;
+package co.edu.uniquindio.poo.generics.Enunciados.ejercicioNueve;
 
 import java.time.LocalDate;
+
+//GestorPedidos con varios criterios de orden
+//Definir Pedido (id, cliente, fecha LocalDate, total). GestorPedidos mantiene LinkedList<Pedido> y debe:
+//*Filtrar pedidos de un cliente exacto solo con Iterator.
+//*Orden natural por id (Comparable<Pedido>).
+//*Comparator por fecha (asc) y, si empata, por total (desc).
 
 public class Pedido implements Comparable<Pedido>{
     private int id;

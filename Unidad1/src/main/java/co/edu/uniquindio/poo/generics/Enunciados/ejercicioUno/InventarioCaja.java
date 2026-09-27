@@ -1,4 +1,4 @@
-package co.edu.uniquindio.poo.Enunciados.ejercicioUno;
+package co.edu.uniquindio.poo.generics.Enunciados.ejercicioUno;
 
 import java.util.ArrayList;
 import java.util.Iterator;
