@@ -1,4 +1,4 @@
-package co.edu.uniquindio.poo.generics.ejercicioOnce;
+package co.edu.uniquindio.poo.generics.NivelAvanzado.ejercicioOnce;
 
 public class EntidadPersistente<T extends Number & Comparable<T>> {
     private T valor;

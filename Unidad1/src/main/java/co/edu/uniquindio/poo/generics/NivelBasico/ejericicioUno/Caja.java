@@ -1,4 +1,4 @@
-package co.edu.uniquindio.poo.generics.ejercicioUno;
+package co.edu.uniquindio.poo.generics.NivelBasico.ejericicioUno;
 
 public class Caja<T> {
     private T contenido;

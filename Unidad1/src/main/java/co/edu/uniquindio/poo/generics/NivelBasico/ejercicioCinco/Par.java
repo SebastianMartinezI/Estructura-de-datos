@@ -1,4 +1,4 @@
-package co.edu.uniquindio.poo.generics.ejercicioCinco;
+package co.edu.uniquindio.poo.generics.NivelBasico.ejercicioCinco;
 
 public class Par<T> {
     private T valor1;

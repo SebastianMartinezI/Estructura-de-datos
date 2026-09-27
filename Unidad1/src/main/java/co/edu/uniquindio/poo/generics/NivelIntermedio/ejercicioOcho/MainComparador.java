@@ -1,4 +1,4 @@
-package co.edu.uniquindio.poo.generics.ejercicioOcho;
+package co.edu.uniquindio.poo.generics.NivelIntermedio.ejercicioOcho;
 
 public class MainComparador {
     //Clase Comparador<T extends Comparable<T>>

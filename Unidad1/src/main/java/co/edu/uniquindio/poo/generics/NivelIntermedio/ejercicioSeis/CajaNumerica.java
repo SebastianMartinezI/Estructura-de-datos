@@ -1,4 +1,4 @@
-package co.edu.uniquindio.poo.generics.ejercicioSeis;
+package co.edu.uniquindio.poo.generics.NivelIntermedio.ejercicioSeis;
 
 public class CajaNumerica<T extends Number> {
     private T valor;
