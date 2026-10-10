@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * Representa un paquete registrado en el centro de distribución
  * QuindíoExpress.
- *
+ * <p>
  * El orden natural de los paquetes se establece mediante su código
  * en orden alfabético ascendente.
  *
@@ -22,10 +22,10 @@ public class Paquete implements Comparable<Paquete> {
     /**
      * Construye un paquete validando sus datos.
      *
-     * @param codigo identificador único del paquete
-     * @param destino municipio de entrega
-     * @param peso peso del paquete en kilogramos
-     * @param prioridad nivel de prioridad entre 1 y 5
+     * @param codigo         identificador único del paquete
+     * @param destino        municipio de entrega
+     * @param peso           peso del paquete en kilogramos
+     * @param prioridad      nivel de prioridad entre 1 y 5
      * @param tiempoEstimado tiempo de entrega en minutos
      * @throws IllegalArgumentException si algún dato no es válido
      */
@@ -103,12 +103,7 @@ public class Paquete implements Comparable<Paquete> {
      */
     @Override
     public String toString() {
-        return "Paquete{" +
-                "codigo='" + codigo + '\'' +
-                ", destino='" + destino + '\'' +
-                ", peso=" + peso +
-                " kg, prioridad=" + prioridad +
-                ", tiempoEstimado=" + tiempoEstimado +
-                " min}";
+        return String.format("[%-6s] %-12s %5.1f kg | Prioridad: %d | %3d min",
+                codigo, destino, peso, prioridad, tiempoEstimado);
     }
 }
