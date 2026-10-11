@@ -5,13 +5,16 @@ import java.util.Objects;
 /**
  * Representa un paquete registrado en el centro de distribución
  * QuindíoExpress.
- * <p>
+ *
  * El orden natural de los paquetes se establece mediante su código
  * en orden alfabético ascendente.
  *
  * @author Juan Martinez
  */
 public class Paquete implements Comparable<Paquete> {
+
+    private static final int PRIORIDAD_MINIMA = 1;
+    private static final int PRIORIDAD_MAXIMA = 5;
 
     private final String codigo;
     private final String destino;
@@ -22,15 +25,17 @@ public class Paquete implements Comparable<Paquete> {
     /**
      * Construye un paquete validando sus datos.
      *
-     * @param codigo         identificador único del paquete
-     * @param destino        municipio de entrega
-     * @param peso           peso del paquete en kilogramos
-     * @param prioridad      nivel de prioridad entre 1 y 5
-     * @param tiempoEstimado tiempo de entrega en minutos
-     * @throws IllegalArgumentException si algún dato no es válido
+     * @param codigo identificador único del paquete
+     * @param destino municipio de entrega
+     * @param peso peso del paquete en kilogramos
+     * @param prioridad nivel de prioridad entre 1 y 5
+     * @param tiempoEstimado tiempo estimado de entrega en minutos
      */
-    public Paquete(String codigo, String destino, double peso,
-                   int prioridad, int tiempoEstimado) {
+    public Paquete(String codigo,
+                   String destino,
+                   double peso,
+                   int prioridad,
+                   int tiempoEstimado) {
 
         if (codigo == null || codigo.isBlank()) {
             throw new IllegalArgumentException(
@@ -47,7 +52,8 @@ public class Paquete implements Comparable<Paquete> {
                     "El peso debe ser mayor que cero y finito.");
         }
 
-        if (prioridad < 1 || prioridad > 5) {
+        if (prioridad < PRIORIDAD_MINIMA
+                || prioridad > PRIORIDAD_MAXIMA) {
             throw new IllegalArgumentException(
                     "La prioridad debe estar entre 1 y 5.");
         }
@@ -57,7 +63,7 @@ public class Paquete implements Comparable<Paquete> {
                     "El tiempo estimado debe ser mayor que cero.");
         }
 
-        this.codigo = codigo.trim();
+        this.codigo = codigo.trim().toUpperCase();
         this.destino = destino.trim();
         this.peso = peso;
         this.prioridad = prioridad;
@@ -85,25 +91,35 @@ public class Paquete implements Comparable<Paquete> {
     }
 
     /**
-     * Compara paquetes según su código de forma ascendente.
+     * Compara paquetes por código en orden alfabético ascendente.
      *
-     * @param otro paquete con el cual se realiza la comparación
-     * @return valor negativo, cero o positivo según el orden
+     * @param otro paquete con el que se realiza la comparación
+     * @return resultado de comparar ambos códigos
      */
     @Override
     public int compareTo(Paquete otro) {
-        Objects.requireNonNull(otro, "El paquete no puede ser nulo");
-        return this.codigo.compareTo(otro.codigo);
+
+        Objects.requireNonNull(
+                otro,
+                "El paquete no puede ser nulo.");
+
+        return codigo.compareToIgnoreCase(otro.codigo);
     }
 
     /**
-     * Devuelve la información del paquete en formato legible.
+     * Devuelve una representación legible del paquete.
      *
-     * @return descripción del paquete
+     * @return información formateada del paquete
      */
     @Override
     public String toString() {
-        return String.format("[%-6s] %-12s %5.1f kg | Prioridad: %d | %3d min",
-                codigo, destino, peso, prioridad, tiempoEstimado);
+
+        return String.format(
+                "[%-6s] %-12s %5.1f kg | Prioridad: %d | %3d min",
+                codigo,
+                destino,
+                peso,
+                prioridad,
+                tiempoEstimado);
     }
 }
