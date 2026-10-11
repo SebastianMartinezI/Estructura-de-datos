@@ -1,6 +1,7 @@
 package co.edu.uniquindio.poo.comparadores;
 
 import co.edu.uniquindio.poo.modelo.Paquete;
+
 import java.util.Comparator;
 
 /**
@@ -19,6 +20,14 @@ public final class ComparadoresPaquetes {
      */
     private ComparadoresPaquetes() {
     }
+
+    /**
+     * Ordena los paquetes por código en orden alfabético ascendente.
+     * Se utiliza para ordenar una lista antes de aplicar
+     * búsqueda binaria por código.
+     */
+    public static final Comparator<Paquete> POR_CODIGO =
+            Comparator.comparing(Paquete::getCodigo);
 
     /**
      * Ordena los paquetes por prioridad de mayor a menor.
