@@ -3,7 +3,6 @@ package co.edu.uniquindio.poo.servicios;
 import co.edu.uniquindio.poo.modelo.Paquete;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -15,50 +14,55 @@ import java.util.TreeSet;
  * Administra el registro y la consulta de paquetes
  * del centro de distribución QuindíoExpress.
  *
- * Utiliza diferentes colecciones según las necesidades:
- * - ArrayList: conservar el orden de llegada.
- * - HashMap: consultar rápidamente por código.
- * - HashSet: obtener municipios sin duplicados.
- * - TreeSet: obtener municipios ordenados.
+ * Utiliza:
+ * - ArrayList para conservar el orden de llegada.
+ * - HashMap para buscar paquetes por código.
+ * - HashSet para municipios únicos.
+ * - TreeSet para municipios ordenados.
  *
  * @author Juan Martinez
  */
 public class GestionPaquetes {
 
     /**
-     * Conserva los paquetes en el orden original de registro.
+     * Conserva los paquetes en orden de registro.
      */
     private final List<Paquete> paquetesRegistrados;
 
     /**
-     * Permite acceder a un paquete mediante su código.
+     * Permite consultar paquetes rápidamente por código.
      */
     private final Map<String, Paquete> paquetesPorCodigo;
 
     /**
-     * Identifica los paquetes que siguen pendientes
-     * de entrega mediante su código.
+     * Contiene los códigos de paquetes que aún no han sido entregados.
      */
     private final Set<String> codigosPendientes;
 
     /**
-     * Inicializa las estructuras utilizadas por el sistema.
+     * Conserva municipios sin elementos repetidos.
      */
+    private final Set<String> municipios;
+
+    /**
+     * Conserva municipios sin repetición y ordenados alfabéticamente.
+     */
+    private final Set<String> municipiosOrdenados;
+
     public GestionPaquetes() {
-        paquetesRegistrados = new ArrayList<>();
-        paquetesPorCodigo = new HashMap<>();
-        codigosPendientes = new HashSet<>();
+
+        this.paquetesRegistrados = new ArrayList<>();
+        this.paquetesPorCodigo = new HashMap<>();
+        this.codigosPendientes = new HashSet<>();
+        this.municipios = new HashSet<>();
+        this.municipiosOrdenados = new TreeSet<>();
     }
 
     /**
-     * Registra un paquete si su código no existe previamente.
-     *
-     * Complejidad temporal esperada: O(1) amortizado.
-     * Complejidad espacial adicional: O(1) por registro.
+     * Registra un paquete si no existe otro con su mismo código.
      *
      * @param paquete paquete que se desea registrar
-     * @return true si se registró; false si el código ya existe
-     * @throws IllegalArgumentException si el paquete es nulo
+     * @return true si fue registrado, false si el código ya existe
      */
     public boolean registrarPaquete(Paquete paquete) {
 
@@ -76,16 +80,16 @@ public class GestionPaquetes {
         paquetesRegistrados.add(paquete);
         paquetesPorCodigo.put(codigo, paquete);
         codigosPendientes.add(codigo);
+        municipios.add(paquete.getDestino());
+        municipiosOrdenados.add(paquete.getDestino());
 
         return true;
     }
 
     /**
-     * Busca un paquete registrado mediante su código.
+     * Busca un paquete registrado por su código.
      *
-     * Complejidad temporal esperada: O(1).
-     *
-     * @param codigo identificador del paquete
+     * @param codigo código del paquete
      * @return paquete encontrado o null si no existe
      */
     public Paquete buscarPorCodigo(String codigo) {
@@ -94,28 +98,22 @@ public class GestionPaquetes {
             return null;
         }
 
-        return paquetesPorCodigo.get(codigo.trim());
+        return paquetesPorCodigo.get(codigo.trim().toUpperCase());
     }
 
     /**
-     * Obtiene una copia de los paquetes en el orden
-     * original en que fueron registrados.
+     * Retorna una copia de los paquetes en orden de llegada.
      *
-     * Complejidad temporal: O(n).
-     *
-     * @return lista con los paquetes registrados
+     * @return lista de paquetes registrados
      */
     public List<Paquete> obtenerOrdenLlegada() {
         return new ArrayList<>(paquetesRegistrados);
     }
 
     /**
-     * Consulta los paquetes que todavía no han sido
-     * entregados, conservando su orden de registro.
+     * Retorna paquetes pendientes conservando el orden de llegada.
      *
-     * Complejidad temporal esperada: O(n).
-     *
-     * @return lista de paquetes pendientes
+     * @return lista de paquetes que aún no se han entregado
      */
     public List<Paquete> obtenerPendientes() {
 
@@ -132,12 +130,10 @@ public class GestionPaquetes {
     }
 
     /**
-     * Determina si un paquete permanece pendiente.
+     * Determina si un paquete todavía está pendiente.
      *
-     * Complejidad temporal esperada: O(1).
-     *
-     * @param codigo identificador del paquete
-     * @return true si está pendiente
+     * @param codigo código del paquete
+     * @return true si el paquete está pendiente
      */
     public boolean estaPendiente(String codigo) {
 
@@ -145,19 +141,14 @@ public class GestionPaquetes {
             return false;
         }
 
-        return codigosPendientes.contains(codigo.trim());
+        return codigosPendientes.contains(codigo.trim().toUpperCase());
     }
 
     /**
-     * Marca como entregado un paquete que estaba pendiente.
+     * Marca como entregado un paquete pendiente.
      *
-     * Este método será utilizado posteriormente por
-     * GestionDespachos al confirmar una entrega.
-     *
-     * Complejidad temporal esperada: O(1).
-     *
-     * @param codigo identificador del paquete
-     * @return true si cambió de pendiente a entregado
+     * @param codigo código del paquete
+     * @return true si pasó de pendiente a entregado
      */
     public boolean marcarEntregado(String codigo) {
 
@@ -165,56 +156,32 @@ public class GestionPaquetes {
             return false;
         }
 
-        return codigosPendientes.remove(codigo.trim());
+        return codigosPendientes.remove(codigo.trim().toUpperCase());
     }
 
     /**
-     * Obtiene los municipios destino sin duplicados.
+     * Retorna municipios únicos sin un orden garantizado.
      *
-     * Complejidad temporal esperada: O(n).
-     *
-     * @return conjunto de municipios registrados
+     * @return copia del conjunto de municipios
      */
     public Set<String> obtenerMunicipios() {
-
-        Set<String> municipios = new HashSet<>();
-
-        for (Paquete paquete : paquetesRegistrados) {
-            municipios.add(paquete.getDestino());
-        }
-
-        return municipios;
+        return new HashSet<>(municipios);
     }
 
     /**
-     * Obtiene los municipios destino ordenados
-     * alfabéticamente y sin duplicados.
+     * Retorna municipios únicos ordenados alfabéticamente.
      *
-     * Complejidad temporal: O(n log m),
-     * donde m es el número de municipios distintos.
-     *
-     * @return conjunto ordenado de municipios
+     * @return copia ordenada del conjunto de municipios
      */
     public Set<String> obtenerMunicipiosOrdenados() {
-
-        Set<String> municipios = new TreeSet<>();
-
-        for (Paquete paquete : paquetesRegistrados) {
-            municipios.add(paquete.getDestino());
-        }
-
-        return municipios;
+        return new TreeSet<>(municipiosOrdenados);
     }
 
     /**
-     * Agrupa los paquetes registrados según su municipio.
+     * Agrupa los paquetes registrados por destino.
+     * El orden de llegada se mantiene en cada grupo.
      *
-     * Conserva el orden de llegada dentro de cada grupo.
-     *
-     * Complejidad temporal esperada: O(n).
-     *
-     * @return mapa que relaciona cada municipio
-     *         con sus paquetes registrados
+     * @return mapa con destino como clave y lista de paquetes como valor
      */
     public Map<String, List<Paquete>> agruparPorDestino() {
 
@@ -222,10 +189,9 @@ public class GestionPaquetes {
 
         for (Paquete paquete : paquetesRegistrados) {
 
-            String destino = paquete.getDestino();
-
             agrupados.computeIfAbsent(
-                    destino, clave -> new ArrayList<>()
+                    paquete.getDestino(),
+                    destino -> new ArrayList<>()
             ).add(paquete);
         }
 
@@ -233,22 +199,18 @@ public class GestionPaquetes {
     }
 
     /**
-     * Obtiene el total de paquetes registrados.
+     * Retorna la cantidad total de paquetes registrados.
      *
-     * Complejidad temporal: O(1).
-     *
-     * @return cantidad de paquetes
+     * @return cantidad de paquetes registrados
      */
     public int obtenerCantidadRegistrados() {
         return paquetesRegistrados.size();
     }
 
     /**
-     * Obtiene la cantidad de paquetes pendientes.
+     * Retorna la cantidad actual de paquetes pendientes.
      *
-     * Complejidad temporal esperada: O(1).
-     *
-     * @return cantidad de pendientes
+     * @return cantidad de paquetes pendientes
      */
     public int obtenerCantidadPendientes() {
         return codigosPendientes.size();

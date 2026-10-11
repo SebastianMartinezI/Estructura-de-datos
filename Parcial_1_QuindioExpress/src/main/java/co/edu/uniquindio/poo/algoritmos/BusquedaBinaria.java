@@ -5,38 +5,18 @@ import co.edu.uniquindio.poo.modelo.Paquete;
 import java.util.List;
 
 /**
- * Implementa la búsqueda binaria de paquetes por código.
+ * Búsqueda binaria de paquetes por código.
  *
- * Precondición: la lista debe encontrarse ordenada
- * ascendentemente por el código de los paquetes.
- *
- * Complejidad temporal: O(log n).
- * Complejidad espacial adicional: O(1).
- *
- * @author Juan Martinez
+ * La lista debe estar ordenada por código.
  */
 public final class BusquedaBinaria {
 
-    /**
-     * Evita crear instancias de la clase utilitaria.
-     */
     private BusquedaBinaria() {
     }
 
-    /**
-     * Busca un paquete mediante su código utilizando
-     * el algoritmo de búsqueda binaria.
-     *
-     * En cada iteración se descarta aproximadamente
-     * la mitad del intervalo restante.
-     *
-     * @param paquetes lista ordenada por código ascendente
-     * @param codigo código del paquete que se busca
-     * @return paquete encontrado o null si no existe
-     * @throws IllegalArgumentException si los argumentos son inválidos
-     */
     public static Paquete buscarPorCodigo(
-            List<Paquete> paquetes, String codigo) {
+            List<Paquete> paquetes,
+            String codigo) {
 
         if (paquetes == null) {
             throw new IllegalArgumentException(
@@ -48,7 +28,7 @@ public final class BusquedaBinaria {
                     "El código no puede estar vacío.");
         }
 
-        String codigoBuscado = codigo.trim();
+        String codigoBuscado = codigo.trim().toUpperCase();
 
         int izquierda = 0;
         int derecha = paquetes.size() - 1;
@@ -59,8 +39,8 @@ public final class BusquedaBinaria {
 
             Paquete paqueteMedio = paquetes.get(medio);
 
-            int comparacion =
-                    codigoBuscado.compareTo(paqueteMedio.getCodigo());
+            int comparacion = codigoBuscado.compareTo(
+                    paqueteMedio.getCodigo());
 
             if (comparacion == 0) {
                 return paqueteMedio;
