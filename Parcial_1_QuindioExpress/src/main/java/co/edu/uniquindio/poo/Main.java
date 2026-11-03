@@ -148,7 +148,7 @@ public class Main {
                 "<html><div style='width:280px;'>"
                         + "<b>Bienvenido a QuindíoExpress.</b><br><br>"
                         + "Se cargaron "
-                        + gestionPaquetes.obtenerCantidadRegistrados()
+                            + gestionPaquetes.obtenerCantidadRegistrados()
                         + " paquetes y "
                         + gestionRepartidores.obtenerCantidadRepartidores()
                         + " repartidores.<br><br>"
