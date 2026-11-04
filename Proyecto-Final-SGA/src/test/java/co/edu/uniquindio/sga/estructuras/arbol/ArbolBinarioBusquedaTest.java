@@ -93,6 +93,41 @@ class ArbolBinarioBusquedaTest {
         assertThrows(NullPointerException.class, () -> arbol.eliminar(null));
     }
 
+
+    @Test
+    void eliminaNodoConDosHijosYConservaSubarbol() {
+        ArbolBinarioBusqueda<Integer> arbol =
+                new ArbolBinarioBusqueda<>();
+
+        int[] valores = {40, 20, 70, 60, 80, 65};
+
+        for (int valor : valores) {
+            arbol.insertar(valor);
+        }
+
+        assertTrue(arbol.eliminar(40));
+        assertEquals(5, arbol.tamano());
+        assertFalse(arbol.contiene(40));
+        assertEquals("20,60,65,70,80,", elementos(arbol));
+    }
+
+    @Test
+    void iteradorDetectaEliminacionDuranteRecorrido() {
+        ArbolBinarioBusqueda<Integer> arbol = crearArbol();
+
+        Iterator<Integer> iterador = arbol.iterator();
+
+        assertEquals(1, iterador.next());
+
+        arbol.eliminar(3);
+
+        assertThrows(
+                ConcurrentModificationException.class,
+                iterador::hasNext
+        );
+    }
+
+
     private ArbolBinarioBusqueda<Integer> crearArbol() {
         ArbolBinarioBusqueda<Integer> arbol = new ArbolBinarioBusqueda<>();
         int[] valores = {4, 2, 6, 1, 3, 5, 7};
