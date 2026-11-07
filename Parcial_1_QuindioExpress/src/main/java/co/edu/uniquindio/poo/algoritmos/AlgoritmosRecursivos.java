@@ -29,10 +29,7 @@ public final class AlgoritmosRecursivos {
         return sumarPesoRecursivo(paquetes, municipio.trim(), 0);
     }
 
-    private static double sumarPesoRecursivo(
-            List<Paquete> paquetes,
-            String municipio,
-            int indice) {
+    private static double sumarPesoRecursivo(List<Paquete> paquetes, String municipio, int indice) {
 
         // Caso base.
         if (indice >= paquetes.size()) {
@@ -40,14 +37,8 @@ public final class AlgoritmosRecursivos {
         }
 
         Paquete actual = paquetes.get(indice);
-
-        double pesoActual = actual.getDestino()
-                .equalsIgnoreCase(municipio)
-                ? actual.getPeso()
-                : 0;
-
-        return pesoActual
-                + sumarPesoRecursivo(paquetes, municipio, indice + 1);
+        double pesoActual = actual.getDestino().equalsIgnoreCase(municipio) ? actual.getPeso() : 0;
+        return pesoActual + sumarPesoRecursivo(paquetes, municipio, indice + 1);
     }
 
     /**
