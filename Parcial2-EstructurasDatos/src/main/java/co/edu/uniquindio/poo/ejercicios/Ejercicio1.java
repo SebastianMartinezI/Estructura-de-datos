@@ -6,10 +6,10 @@ import co.edu.uniquindio.poo.servicios.EvaluadorExpresionesService;
 import co.edu.uniquindio.poo.servicios.EvaluadorExpresionesService.ResultadoEvaluacion;
 
 /**
- * Ejecuta y verifica el ejercicio 1 del parcial.
+ * Ejecuta y verifica el ejercicio 1
  *
  * Incluye el retiro de cajas, su reorganizacion
- * y la evaluacion de una expresion postfija.
+ * y la evaluacion de la expresion matematica
  */
 public class Ejercicio1 {
 
@@ -43,7 +43,7 @@ public class Ejercicio1 {
         System.out.println("\nPILA FINAL");
         System.out.println(mostrarPila(pila));
 
-        // Verificar un codigo inexistente.
+        // Verificar que un codigo inexistente no altere la pila.
         String estadoAnterior = mostrarPila(pila);
         boolean inexistente = servicio.retirarCaja(pila, "C99");
 
@@ -53,13 +53,13 @@ public class Ejercicio1 {
                     "Un codigo inexistente altero la pila");
         }
 
-        // Verificar una pila vacia.
+        // Verificar el comportamiento con una pila vacia.
         if (servicio.retirarCaja(new PilaPropia<>(), "C1")) {
             throw new IllegalStateException(
                     "No se puede retirar de una pila vacia");
         }
 
-        // Evaluar la expresion con las cajas restantes.
+        // Evaluar la expresion oficial con las cajas restantes.
         evaluarExpresion(pila);
 
         System.out.println(
@@ -67,7 +67,12 @@ public class Ejercicio1 {
     }
 
     /**
-     * Ejecuta un retiro y comprueba su resultado.
+     * Ejecuta un retiro y verifica el resultado obtenido.
+     *
+     * @param servicio servicio encargado del retiro.
+     * @param pila pila que contiene las cajas.
+     * @param codigo codigo de la caja que se desea retirar.
+     * @param esperado contenido esperado despues del retiro.
      */
     private static void probarRetiro(
             RetiroCajasService servicio,
@@ -90,9 +95,16 @@ public class Ejercicio1 {
 
     /**
      * Obtiene los valores de las cuatro cajas finales
-     * y evalua una expresion matematica postfija.
+     * y evalua la expresion matematica oficial:
+     *
+     * (A + B) * C - (A - B) * D
+     *
+     * La evaluacion se realiza en notacion postfija,
+     * utilizando una pila propia.
      *
      * La pila original conserva su contenido y orden.
+     *
+     * @param pila pila con las cuatro cajas restantes.
      */
     private static void evaluarExpresion(PilaPropia<Caja> pila) {
 
@@ -103,6 +115,7 @@ public class Ejercicio1 {
 
         PilaPropia<Caja> auxiliar = new PilaPropia<>();
 
+        // Obtener las cajas desde la cima hacia el fondo.
         Caja primera = pila.desapilar();
         auxiliar.apilar(primera);
 
@@ -120,7 +133,7 @@ public class Ejercicio1 {
             pila.apilar(auxiliar.desapilar());
         }
 
-        // Calcular las variables del enunciado.
+        // Calcular las variables segun el enunciado.
         double a = primera.getValor();
 
         if (a == 0) {
@@ -138,14 +151,23 @@ public class Ejercicio1 {
         System.out.println("C = " + c);
         System.out.println("D = " + d);
 
-        // Expresion propuesta: (A + B) * C - D / A
-        // Postfija: A B + C * D A / -
+        // Expresion infija oficial del docente:
+        // (A + B) * C - (A - B) * D
+        //
+        // Conversion a notacion postfija:
+        // A B + C * A B - D * -
 
+        System.out.println("\nEXPRESION INFIJA");
+        System.out.println("(A + B) * C - (A - B) * D");
+
+        // Sustituir las variables por sus valores.
         String expresionPostfija =
                 a + " " + b + " + "
                         + c + " * "
-                        + d + " " + a + " / -";
+                        + a + " " + b + " - "
+                        + d + " * -";
 
+        // Evaluar la expresion mediante una pila propia.
         EvaluadorExpresionesService evaluador =
                 new EvaluadorExpresionesService();
 
@@ -153,16 +175,24 @@ public class Ejercicio1 {
                 evaluador.evaluarPostfija(expresionPostfija);
 
         System.out.println("\nEXPRESION POSTFIJA");
+        System.out.println("A B + C * A B - D * -");
+
+        System.out.println("\nPOSTFIJA CON VALORES");
         System.out.println(expresionPostfija);
 
+        // Mostrar el seguimiento de las operaciones.
         System.out.println("\nTABLA DE EVALUACION");
         System.out.println(evaluacion.tabla());
 
         System.out.println(
                 "RESULTADO FINAL: " + evaluacion.valor());
 
-        // Verificar el resultado esperado.
-        if (Math.abs(evaluacion.valor() - 30.0) > 0.000001) {
+        // Verificar el resultado esperado de la expresion oficial.
+        double resultadoEsperado = 84.0;
+        double tolerancia = 0.000001;
+
+        if (Math.abs(evaluacion.valor() - resultadoEsperado)
+                > tolerancia) {
             throw new IllegalStateException(
                     "El resultado de la expresion es incorrecto");
         }
@@ -171,6 +201,9 @@ public class Ejercicio1 {
     /**
      * Muestra la pila desde la cima hasta el fondo
      * sin modificar su contenido original.
+     *
+     * @param pila pila que se desea mostrar.
+     * @return representacion de los elementos en orden.
      */
     private static String mostrarPila(PilaPropia<Caja> pila) {
 
