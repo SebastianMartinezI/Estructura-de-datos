@@ -1,0 +1,13 @@
+flowchart TD
+  UI[GUI Swing / Java2D] --> RES[Servicios reservas y huéspedes - Juan]
+  UI --> OPE[Servicios operación y preparación - Cristian]
+  UI --> FOL[Servicios folio y reportes - Cristian]
+  RES --> MOD[Modelos y contratos compartidos]
+  OPE --> MOD
+  FOL --> MOD
+  RES --> A[BST / lista doble / cola FIFO / conjunto - Juan]
+  OPE --> G[Grafo / cola prioridad / lista circular - Cristian]
+  FOL --> P[Pila - Cristian]
+  OPE --> RES
+  FOL --> RES
+  DATA[Persistencia y escenario inicial - Cristian] --> MOD
