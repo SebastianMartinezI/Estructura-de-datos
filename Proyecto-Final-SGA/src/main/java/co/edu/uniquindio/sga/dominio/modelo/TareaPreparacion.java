@@ -1,5 +1,8 @@
 package co.edu.uniquindio.sga.dominio.modelo;
 
+import co.edu.uniquindio.sga.excepciones.TransicionEstadoInvalidaException;
+
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -9,6 +12,9 @@ public final class TareaPreparacion {
     private final String codigoApartamento;
     private final LocalDateTime fechaRegistro;
     private final LocalDateTime proximaLlegada;
+
+    private LocalDateTime inicioPreparacion;
+    private LocalDateTime finPreparacion;
 
     public TareaPreparacion(
             String codigoApartamento,
@@ -44,6 +50,66 @@ public final class TareaPreparacion {
                 && proximaLlegada.toLocalDate().equals(fecha);
     }
 
+    public void iniciarPreparacion(LocalDateTime fechaInicio) {
+        if (fechaInicio == null) {
+            throw new IllegalArgumentException(
+                    "La fecha de inicio es obligatoria."
+            );
+        }
+
+        if (inicioPreparacion != null) {
+            throw new TransicionEstadoInvalidaException(
+                    "La preparación ya fue iniciada."
+            );
+        }
+
+        if (fechaInicio.isBefore(fechaRegistro)) {
+            throw new IllegalArgumentException(
+                    "El inicio no puede ser anterior al registro de la tarea."
+            );
+        }
+
+        inicioPreparacion = fechaInicio;
+    }
+
+    public void finalizarPreparacion(LocalDateTime fechaFin) {
+        if (fechaFin == null) {
+            throw new IllegalArgumentException(
+                    "La fecha de finalización es obligatoria."
+            );
+        }
+
+        if (inicioPreparacion == null) {
+            throw new TransicionEstadoInvalidaException(
+                    "Primero debes iniciar la preparación."
+            );
+        }
+
+        if (finPreparacion != null) {
+            throw new TransicionEstadoInvalidaException(
+                    "La preparación ya fue finalizada."
+            );
+        }
+
+        if (fechaFin.isBefore(inicioPreparacion)) {
+            throw new IllegalArgumentException(
+                    "La finalización no puede ser anterior al inicio."
+            );
+        }
+
+        finPreparacion = fechaFin;
+    }
+
+    public Duration calcularDuracion() {
+        if (finPreparacion == null) {
+            throw new TransicionEstadoInvalidaException(
+                    "La preparación debe finalizar para calcular su duración."
+            );
+        }
+
+        return Duration.between(inicioPreparacion, finPreparacion);
+    }
+
     public String getCodigoApartamento() {
         return codigoApartamento;
     }
@@ -54,5 +120,13 @@ public final class TareaPreparacion {
 
     public LocalDateTime getProximaLlegada() {
         return proximaLlegada;
+    }
+
+    public LocalDateTime getInicioPreparacion() {
+        return inicioPreparacion;
+    }
+
+    public LocalDateTime getFinPreparacion() {
+        return finPreparacion;
     }
 }

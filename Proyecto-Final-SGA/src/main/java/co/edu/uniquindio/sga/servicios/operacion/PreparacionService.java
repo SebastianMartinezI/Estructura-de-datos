@@ -5,6 +5,7 @@ import co.edu.uniquindio.sga.estructuras.cola_prioridad.ColaPrioridad;
 
 import java.time.Clock;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.Objects;
@@ -35,14 +36,10 @@ public final class PreparacionService {
 
         actualizarOrden();
 
-        for (TareaPreparacion pendiente : pendientes) {
-            if (pendiente.getCodigoApartamento()
-                    .equals(tarea.getCodigoApartamento())) {
-
-                throw new IllegalArgumentException(
-                        "El apartamento ya tiene una tarea pendiente."
-                );
-            }
+        if (buscarTarea(tarea.getCodigoApartamento()) != null) {
+            throw new IllegalArgumentException(
+                    "El apartamento ya tiene una tarea pendiente."
+            );
         }
 
         pendientes.encolar(tarea);
@@ -62,9 +59,53 @@ public final class PreparacionService {
         return pendientes.tamano();
     }
 
-    private ColaPrioridad<TareaPreparacion> crearCola(
-            LocalDate fecha
-    ) {
+    public void iniciarPreparacion(String codigoApartamento) {
+        Objects.requireNonNull(
+                codigoApartamento,
+                "El código del apartamento es obligatorio."
+        );
+
+        TareaPreparacion tarea = buscarTarea(codigoApartamento);
+
+        if (tarea == null) {
+            throw new IllegalArgumentException(
+                    "No existe una tarea pendiente para ese apartamento."
+            );
+        }
+
+        tarea.iniciarPreparacion(LocalDateTime.now(reloj));
+    }
+
+    public void finalizarPreparacion(String codigoApartamento) {
+        Objects.requireNonNull(
+                codigoApartamento,
+                "El código del apartamento es obligatorio."
+        );
+
+        TareaPreparacion tarea = buscarTarea(codigoApartamento);
+
+        if (tarea == null) {
+            throw new IllegalArgumentException(
+                    "No existe una tarea para ese apartamento."
+            );
+        }
+
+        tarea.finalizarPreparacion(LocalDateTime.now(reloj));
+    }
+
+    private TareaPreparacion buscarTarea(String codigoApartamento) {
+        String codigo = codigoApartamento.trim();
+
+        for (TareaPreparacion tarea : pendientes) {
+            if (tarea.getCodigoApartamento().equals(codigo)) {
+                return tarea;
+            }
+        }
+
+        return null;
+    }
+
+    private ColaPrioridad<TareaPreparacion> crearCola(LocalDate fecha) {
         Comparator<TareaPreparacion> comparador =
                 Comparator
                         .comparingInt(
