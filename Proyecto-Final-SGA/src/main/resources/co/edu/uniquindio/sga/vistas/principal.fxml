@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="co.edu.uniquindio.sga.interfaz.controladores.PrincipalController"
+            prefWidth="1100" prefHeight="700" styleClass="app-root">
+    <left>
+        <VBox prefWidth="244" minWidth="244" spacing="5" styleClass="sidebar">
+            <Label text="APARTA-SUITES UQ" styleClass="brand" />
+            <Label text="Sistema de Gestión de Alojamiento" wrapText="true" styleClass="brand-subtitle" />
+
+            <Label text="GENERAL" styleClass="menu-section" />
+            <Button text="Inicio" userData="INICIO" onAction="#seleccionarModulo"
+                    maxWidth="Infinity" styleClass="menu-button" />
+
+            <Label text="JUAN · GESTIÓN COMERCIAL" styleClass="menu-section" />
+            <Button text="Reservas" userData="RESERVAS" onAction="#seleccionarModulo"
+                    maxWidth="Infinity" styleClass="menu-button" />
+            <Button text="Disponibilidad" userData="DISPONIBILIDAD" onAction="#seleccionarModulo"
+                    maxWidth="Infinity" styleClass="menu-button" />
+            <Button text="Calendario" userData="CALENDARIO" onAction="#seleccionarModulo"
+                    maxWidth="Infinity" styleClass="menu-button" />
+            <Button text="Huéspedes" userData="HUESPEDES" onAction="#seleccionarModulo"
+                    maxWidth="Infinity" styleClass="menu-button" />
+
+            <Label text="CRISTIAN · OPERACIÓN" styleClass="menu-section" />
+            <Button text="Tablero principal" userData="TABLERO" onAction="#seleccionarModulo"
+                    maxWidth="Infinity" styleClass="menu-button" />
+            <Button text="Preparación" userData="PREPARACION" onAction="#seleccionarModulo"
+                    maxWidth="Infinity" styleClass="menu-button" />
+            <Button text="Mapa del edificio" userData="MAPA" onAction="#seleccionarModulo"
+                    maxWidth="Infinity" styleClass="menu-button" />
+            <Button text="Folios" userData="FOLIOS" onAction="#seleccionarModulo"
+                    maxWidth="Infinity" styleClass="menu-button" />
+            <Button text="Estadísticas" userData="ESTADISTICAS" onAction="#seleccionarModulo"
+                    maxWidth="Infinity" styleClass="menu-button" />
+        </VBox>
+    </left>
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="topbar">
+            <Label text="SGA | Aparta-Suites UQ" styleClass="topbar-title" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Label text="Prototipo de navegación" styleClass="topbar-tag" />
+        </HBox>
+    </top>
+
+    <center>
+        <StackPane alignment="CENTER" styleClass="content">
+            <VBox alignment="CENTER_LEFT" spacing="16" maxWidth="720" styleClass="content-card">
+                <Label text="SISTEMA DE GESTIÓN DE ALOJAMIENTO" styleClass="eyebrow" />
+                <Label fx:id="tituloModulo" text="Inicio" wrapText="true" styleClass="section-title" />
+                <Label fx:id="descripcionModulo" text="" wrapText="true" styleClass="description" />
+                <Label fx:id="estadoModulo" text="" styleClass="status-label" />
+            </VBox>
+        </StackPane>
+    </center>
+
+    <bottom>
+        <HBox styleClass="footer">
+            <Label text="Proyecto académico · Estructuras de Datos · Universidad del Quindío"
+                   styleClass="footer-text" />
+        </HBox>
+    </bottom>
+</BorderPane>

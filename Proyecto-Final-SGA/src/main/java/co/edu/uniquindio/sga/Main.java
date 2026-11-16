@@ -1,31 +1,18 @@
 package co.edu.uniquindio.sga;
 
-import co.edu.uniquindio.sga.interfaz.VistaPrincipal;
+import co.edu.uniquindio.sga.interfaz.SgaApplication;
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
-/** Punto de entrada de la aplicación JavaFX. */
-public final class Main extends Application {
+/**
+ * Punto de entrada principal del SGA.
+ */
+public final class Main {
 
-    @Override
-    public void start(Stage primaryStage) {
-        VistaPrincipal vistaPrincipal = new VistaPrincipal();
-
-        Scene escena = new Scene(
-                vistaPrincipal,
-                1100,
-                700
-        );
-
-        primaryStage.setTitle("SGA - Aparta-Suites UQ");
-        primaryStage.setMinWidth(900);
-        primaryStage.setMinHeight(600);
-        primaryStage.setScene(escena);
-        primaryStage.show();
+    private Main() {
+        // Evita la instanciación de esta clase.
     }
 
     public static void main(String[] args) {
-        launch(args);
+        Application.launch(SgaApplication.class, args);
     }
 }
