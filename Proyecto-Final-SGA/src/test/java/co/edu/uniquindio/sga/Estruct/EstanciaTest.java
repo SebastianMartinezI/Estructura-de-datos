@@ -1,5 +1,6 @@
-package co.edu.uniquindio.sga.dominio.modelo;
+package co.edu.uniquindio.sga.Estruct;
 
+import co.edu.uniquindio.sga.dominio.modelo.Estancia;
 import co.edu.uniquindio.sga.excepciones.FechaInvalidaException;
 import java.time.LocalDate;
 import java.util.Iterator;

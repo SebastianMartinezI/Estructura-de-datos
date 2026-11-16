@@ -1,5 +1,6 @@
-package co.edu.uniquindio.sga.estructuras.arbol;
+package co.edu.uniquindio.sga.Estruct;
 
+import co.edu.uniquindio.sga.estructuras.arbol.ArbolBinarioBusqueda;
 import org.junit.jupiter.api.Test;
 
 import java.util.ConcurrentModificationException;

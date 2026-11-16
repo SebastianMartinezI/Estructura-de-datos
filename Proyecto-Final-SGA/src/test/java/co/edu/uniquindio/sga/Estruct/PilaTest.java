@@ -1,4 +1,4 @@
-package co.edu.uniquindio.sga.pila;
+package co.edu.uniquindio.sga.Estruct;
 
 import co.edu.uniquindio.sga.estructuras.pila.Pila;
 import co.edu.uniquindio.sga.excepciones.EstructuraVaciaException;
