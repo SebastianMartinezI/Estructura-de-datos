@@ -1,0 +1,112 @@
+/* Presentación visual únicamente. Ninguna regla del negocio vive aquí. */
+.app-root {
+    -fx-font-family: "Segoe UI";
+    -fx-background-color: #f3f6fb;
+}
+
+.sidebar {
+    -fx-background-color: #172a45;
+    -fx-padding: 26 16 24 16;
+}
+
+.brand {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+}
+
+.brand-subtitle {
+    -fx-text-fill: #b9cce0;
+    -fx-font-size: 11px;
+    -fx-padding: 0 0 12 0;
+}
+
+.menu-section {
+    -fx-text-fill: #86a7c5;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-padding: 13 8 4 8;
+}
+
+.menu-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 7;
+    -fx-text-fill: #e4edf7;
+    -fx-font-size: 12px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-cursor: hand;
+    -fx-padding: 8 12;
+}
+
+.menu-button:hover,
+.menu-button:focused {
+    -fx-background-color: #294768;
+}
+
+.topbar {
+    -fx-background-color: white;
+    -fx-padding: 18 28;
+    -fx-border-color: transparent transparent #e2e8f0 transparent;
+}
+
+.topbar-title {
+    -fx-text-fill: #20334b;
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+}
+
+.topbar-tag {
+    -fx-text-fill: #41638a;
+    -fx-background-color: #eaf1f9;
+    -fx-padding: 7 11;
+    -fx-background-radius: 12;
+    -fx-font-size: 11px;
+}
+
+.content {
+    -fx-padding: 32;
+}
+
+.content-card {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-padding: 36;
+    -fx-effect: dropshadow(gaussian, rgba(17, 37, 61, 0.08), 14, 0, 0, 4);
+}
+
+.eyebrow {
+    -fx-text-fill: #597b9f;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.section-title {
+    -fx-text-fill: #172a45;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+}
+
+.description {
+    -fx-text-fill: #536579;
+    -fx-font-size: 15px;
+    -fx-line-spacing: 3;
+}
+
+.status-label {
+    -fx-text-fill: #557395;
+    -fx-background-color: #edf3f9;
+    -fx-background-radius: 8;
+    -fx-padding: 8 12;
+    -fx-font-size: 12px;
+}
+
+.footer {
+    -fx-background-color: white;
+    -fx-padding: 12 28;
+    -fx-border-color: #e2e8f0 transparent transparent transparent;
+}
+
+.footer-text {
+    -fx-text-fill: #718096;
+    -fx-font-size: 11px;
+}
