@@ -56,19 +56,24 @@ public final class GestionPreparacionService {
     }
 
     public String asignarSiguienteTarea() {
-        TareaPreparacion tarea =
-                preparacionService.consultarSiguiente();
+        List<String> pendientes =
+                preparacionService.obtenerCodigosPendientes();
 
-        String codigoApartamento = tarea.getCodigoApartamento();
-
-        if (turnoService.tieneAsignacion(codigoApartamento)) {
-            throw new IllegalArgumentException(
-                    "El apartamento ya tiene personal asignado: "
-                            + codigoApartamento
+        if (pendientes.isEmpty()) {
+            throw new IllegalStateException(
+                    "No hay tareas pendientes de preparación."
             );
         }
 
-        return turnoService.asignarTarea(codigoApartamento);
+        for (String codigoApartamento : pendientes) {
+            if (!turnoService.tieneAsignacion(codigoApartamento)) {
+                return turnoService.asignarTarea(codigoApartamento);
+            }
+        }
+
+        throw new IllegalStateException(
+                "Todas las tareas pendientes ya tienen personal asignado."
+        );
     }
 
     public List<String> calcularOrdenRecorrido() {
@@ -112,6 +117,9 @@ public final class GestionPreparacionService {
 
         preparacionService.finalizarPreparacion(codigo);
         turnoService.liberarAsignacion(codigo);
+    }
+    public java.util.List<String> obtenerCodigosPendientes() {
+        return preparacionService.obtenerCodigosPendientes();
     }
 
     public int cantidadPendientes() {
