@@ -1,112 +1,149 @@
 package co.edu.uniquindio.sga.servicios.operacion;
 
-import co.edu.uniquindio.sga.dominio.modelo.Recepcionista;
 import co.edu.uniquindio.sga.estructuras.circular.ListaCircular;
-import co.edu.uniquindio.sga.excepciones.EstructuraVaciaException;
+import java.util.HashMap;
+import java.util.Map;
 
-import java.util.Iterator;
 import java.util.Objects;
 
-public final class TurnoService implements Iterable<Recepcionista> {
+/** Administra la rotación de turnos del personal de limpieza. */
+public final class TurnoService {
 
-    private final ListaCircular<Recepcionista> rotacion =
-            new ListaCircular<>();
+    private final ListaCircular<String> personal;
+    private final Map<String, String> asignaciones;
 
-    public void agregarRecepcionista(Recepcionista recepcionista) {
+    public TurnoService() {
+        personal = new ListaCircular<>();
+        asignaciones = new HashMap<>();
+    }
+
+    public void registrarPersonal(String nombre) {
         Objects.requireNonNull(
-                recepcionista,
-                "El recepcionista no puede ser nulo"
+                nombre,
+                "El nombre del personal es obligatorio."
         );
 
-        if (rotacion.contiene(recepcionista)) {
+        String nombreNormalizado = nombre.trim();
+
+        if (nombreNormalizado.isEmpty()) {
             throw new IllegalArgumentException(
-                    "El recepcionista ya está en la rotación"
+                    "El nombre del personal no puede estar vacío."
             );
         }
 
-        if (!recepcionista.isActivo()) {
+        if (personal.contiene(nombreNormalizado)) {
             throw new IllegalArgumentException(
-                    "No puedes agregar un recepcionista inactivo"
+                    "El personal ya está registrado: " + nombreNormalizado
             );
         }
 
-        rotacion.agregar(recepcionista);
+        personal.agregar(nombreNormalizado);
     }
 
-    public Recepcionista consultarTurnoActual() {
-        validarDisponibilidad();
+    public String consultarTurnoActual() {
+        return personal.verActual();
+    }
 
-        for (int i = 0; i < rotacion.tamano(); i++) {
-            Recepcionista actual = rotacion.verActual();
+    public String avanzarTurno() {
+        return personal.avanzar();
+    }
 
-            if (actual.isActivo()) {
-                return actual;
-            }
-
-            rotacion.avanzar();
-        }
-
-        throw new IllegalStateException(
-                "No hay recepcionistas activos en la rotación"
+    public boolean estaRegistrado(String nombre) {
+        Objects.requireNonNull(
+                nombre,
+                "El nombre del personal es obligatorio."
         );
+
+        return personal.contiene(nombre.trim());
     }
 
-    public Recepcionista avanzarTurno() {
-        // Normaliza el turno por si el actual fue desactivado.
-        consultarTurnoActual();
+    public boolean removerPersonal(String nombre) {
+        Objects.requireNonNull(
+                nombre,
+                "El nombre del personal es obligatorio."
+        );
 
-        rotacion.avanzar();
-
-        return consultarTurnoActual();
+        return personal.eliminar(nombre.trim());
     }
 
-    public boolean retirarDeRotacion(String documento) {
-        if (documento == null || documento.isBlank()) {
+    public int cantidadPersonal() {
+        return personal.tamano();
+    }
+
+    public boolean noHayPersonal() {
+        return personal.estaVacia();
+    }
+    public String asignarTarea(String codigoApartamento) {
+        Objects.requireNonNull(
+                codigoApartamento,
+                "El código del apartamento es obligatorio."
+        );
+
+        if (personal.estaVacia()) {
+            throw new IllegalStateException(
+                    "No hay personal registrado para asignar tareas."
+            );
+        }
+
+        String codigo = codigoApartamento.trim();
+
+        if (asignaciones.containsKey(codigo)) {
             throw new IllegalArgumentException(
-                    "El documento es obligatorio"
+                    "El apartamento ya tiene una asignación: " + codigo
             );
         }
 
-        Recepcionista encontrado = null;
-        String documentoBuscado = documento.trim();
+        String personalAsignado = personal.verActual();
 
-        for (Recepcionista recepcionista : rotacion) {
-            if (recepcionista.getDocumento().equals(documentoBuscado)) {
-                encontrado = recepcionista;
-                break;
-            }
-        }
+        asignaciones.put(codigo, personalAsignado);
+        personal.avanzar();
 
-        // Se elimina después de terminar el recorrido.
-        return encontrado != null && rotacion.eliminar(encontrado);
+        return personalAsignado;
     }
 
-    public int cantidadEnRotacion() {
-        return rotacion.tamano();
-    }
+    public String consultarAsignacion(String codigoApartamento) {
+        Objects.requireNonNull(
+                codigoApartamento,
+                "El código del apartamento es obligatorio."
+        );
 
-    public int cantidadActivos() {
-        int cantidad = 0;
+        String asignacion = asignaciones.get(codigoApartamento.trim());
 
-        for (Recepcionista recepcionista : rotacion) {
-            if (recepcionista.isActivo()) {
-                cantidad++;
-            }
-        }
-
-        return cantidad;
-    }
-
-    private void validarDisponibilidad() {
-        if (rotacion.estaVacia()) {
-            throw new EstructuraVaciaException(
-                    "No hay recepcionistas registrados en la rotación"
+        if (asignacion == null) {
+            throw new IllegalArgumentException(
+                    "El apartamento no tiene una asignación registrada: "
+                            + codigoApartamento
             );
         }
+
+        return asignacion;
     }
 
-    @Override
-    public Iterator<Recepcionista> iterator() {
-        return rotacion.iterator();
+    public boolean tieneAsignacion(String codigoApartamento) {
+        Objects.requireNonNull(
+                codigoApartamento,
+                "El código del apartamento es obligatorio."
+        );
+
+        return asignaciones.containsKey(codigoApartamento.trim());
+    }
+
+    public String liberarAsignacion(String codigoApartamento) {
+        Objects.requireNonNull(
+                codigoApartamento,
+                "El código del apartamento es obligatorio."
+        );
+
+        String codigo = codigoApartamento.trim();
+        String personalAsignado = asignaciones.remove(codigo);
+
+        if (personalAsignado == null) {
+            throw new IllegalArgumentException(
+                    "El apartamento no tiene una asignación registrada: "
+                            + codigo
+            );
+        }
+
+        return personalAsignado;
     }
 }
