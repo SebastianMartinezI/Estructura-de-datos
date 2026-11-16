@@ -1,24 +1,26 @@
 package co.edu.uniquindio.sga;
 
+import co.edu.uniquindio.sga.interfaz.VistaPrincipal;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-/** Punto de entrada de la aplicación de escritorio con JavaFX. */
+/** Punto de entrada de la aplicación JavaFX. */
 public final class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Label mensaje = new Label("SGA - Sistema de Gestion de Alojamiento ");
+        VistaPrincipal vistaPrincipal = new VistaPrincipal();
 
-        StackPane raiz = new StackPane();
-        raiz.getChildren().add(mensaje);
+        Scene escena = new Scene(
+                vistaPrincipal,
+                1100,
+                700
+        );
 
-        Scene escena = new Scene(raiz, 600, 400);
-
-        primaryStage.setTitle("Bienvenido a Aparta-Suite UQ");
+        primaryStage.setTitle("SGA - Aparta-Suites UQ");
+        primaryStage.setMinWidth(900);
+        primaryStage.setMinHeight(600);
         primaryStage.setScene(escena);
         primaryStage.show();
     }

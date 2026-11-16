@@ -1,55 +1,81 @@
 package co.edu.uniquindio.sga.interfaz;
 
-import java.awt.BorderLayout;
-import java.awt.Font;
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.SwingConstants;
+import javafx.geometry.Insets;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 
-/** Marco base: los módulos se incorporarán mediante Pull Requests. */
-public final class MainFrame extends JFrame {
+/** Contenedor principal de la interfaz JavaFX del alojamiento. */
+public final class MainFrame extends BorderPane {
+
     public MainFrame() {
-        super("SGA | Aparta-Suites UQ");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(920, 600);
-        setLocationRelativeTo(null);
-        setLayout(new BorderLayout());
-
-        JLabel encabezado = new JLabel("SGA · Aparta-Suites UQ", SwingConstants.CENTER);
-        encabezado.setFont(encabezado.getFont().deriveFont(Font.BOLD, 24f));
-        encabezado.setBorder(BorderFactory.createEmptyBorder(22, 12, 18, 12));
-        add(encabezado, BorderLayout.NORTH);
-
-        JTabbedPane pestanas = new JTabbedPane();
-        pestanas.addTab("Inicio", pantallaInicio());
-        pestanas.addTab("Prueba de estancia", new PanelEstancia());
-        pestanas.addTab("Reservas", moduloEnPreparacion("Juan: reservas y calendario"));
-        pestanas.addTab("Preparación", moduloEnPreparacion("Cristian: preparación y rutas"));
-        pestanas.addTab("Huéspedes", moduloEnPreparacion("Juan: huéspedes y favoritos; Cristian: folios"));
-        pestanas.addTab("Mapa", moduloEnPreparacion("Cristian: grafo y mapa interactivo"));
-        pestanas.addTab("Reportes", moduloEnPreparacion("Cristian: estadísticas"));
-        add(pestanas, BorderLayout.CENTER);
+        configurarEncabezado();
+        configurarContenido();
     }
 
-    private JPanel pantallaInicio() {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(etiquetaCentro("Base ejecutable del proyecto. La pestaña 'Prueba de estancia' ya permite validar noches."),
-                BorderLayout.CENTER);
-        return panel;
+    private void configurarEncabezado() {
+        Label titulo = new Label(
+                "SGA - Sistema de Gestión de Alojamiento"
+        );
+
+        titulo.setStyle(
+                "-fx-font-size: 24px; -fx-font-weight: bold;"
+        );
+
+        Label subtitulo = new Label(
+                "Aparta-Suites UQ - Salento, Quindío"
+        );
+
+        VBox encabezado = new VBox(8, titulo, subtitulo);
+        encabezado.setPadding(new Insets(20));
+
+        setTop(encabezado);
     }
 
-    private JPanel moduloEnPreparacion(String texto) {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(etiquetaCentro("MÓDULO PENDIENTE · " + texto), BorderLayout.CENTER);
-        return panel;
+    private void configurarContenido() {
+        TabPane pestanas = new TabPane();
+
+        pestanas.setTabClosingPolicy(
+                TabPane.TabClosingPolicy.UNAVAILABLE
+        );
+
+        Tab inicio = new Tab("Inicio", crearInicio());
+
+        Tab estancia = new Tab(
+                "Consulta de noches",
+                new PanelEstancia()
+        );
+
+        pestanas.getTabs().add(inicio);
+        pestanas.getTabs().add(estancia);
+
+        setCenter(pestanas);
     }
 
-    private JLabel etiquetaCentro(String texto) {
-        JLabel etiqueta = new JLabel(texto, SwingConstants.CENTER);
-        etiqueta.setBorder(BorderFactory.createEmptyBorder(24, 24, 24, 24));
-        return etiqueta;
+    private VBox crearInicio() {
+        Label bienvenida = new Label(
+                "Bienvenido a Aparta-Suites UQ"
+        );
+
+        bienvenida.setStyle("-fx-font-size: 20px;");
+
+        Label descripcion = new Label(
+                "Consulta las noches de una estancia "
+                        + "desde la pestaña Consulta de noches."
+        );
+
+        descripcion.setWrapText(true);
+
+        VBox contenido = new VBox(
+                12,
+                bienvenida,
+                descripcion
+        );
+
+        contenido.setPadding(new Insets(24));
+
+        return contenido;
     }
 }
