@@ -104,4 +104,25 @@ public final class RutaPreparacionService {
 
         return ruta.getDistancia();
     }
+    public List<String> calcularOrdenRecorrido(List<String> apartamentosPendientes) {
+        Objects.requireNonNull(
+                apartamentosPendientes,
+                "La lista de apartamentos pendientes es obligatoria."
+        );
+
+        if (apartamentosPendientes.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        List<String> ordenados = new ArrayList<>(apartamentosPendientes);
+
+        ordenados.sort((primero, segundo) -> {
+            double distanciaPrimero = obtenerDistancia(primero);
+            double distanciaSegundo = obtenerDistancia(segundo);
+
+            return Double.compare(distanciaPrimero, distanciaSegundo);
+        });
+
+        return ordenados;
+    }
 }

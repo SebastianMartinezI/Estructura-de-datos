@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 /** Organiza las tareas pendientes de preparación. */
@@ -144,5 +145,16 @@ public final class PreparacionService {
 
         pendientes = reorganizada;
         fechaOrden = hoy;
+    }
+    public List<String> obtenerCodigosPendientes() {
+        actualizarOrden();
+
+        List<String> codigos = new ArrayList<>();
+
+        for (TareaPreparacion tarea : pendientes) {
+            codigos.add(tarea.getCodigoApartamento());
+        }
+
+        return codigos;
     }
 }
