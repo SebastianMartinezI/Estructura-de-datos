@@ -1,21 +1,19 @@
+
 package co.edu.uniquindio.sga;
 
-import co.edu.uniquindio.sga.interfaz.MainFrame;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+import co.edu.uniquindio.sga.interfaz.SgaApplication;
+import javafx.application.Application;
 
-/** Punto de entrada de la aplicación de escritorio. */
+/**
+ * Punto de entrada principal del SGA.
+ */
 public final class Main {
-    private Main() { }
+
+    private Main() {
+        // Evita la instanciacion de esta clase.
+    }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            try {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            } catch (Exception ignored) {
-                // La aplicación continúa con el estilo gráfico por defecto.
-            }
-            new MainFrame().setVisible(true);
-        });
+        Application.launch(SgaApplication.class, args);
     }
 }
