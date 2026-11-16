@@ -158,4 +158,7 @@ public final class PreparacionService {
 
         return codigos;
     }
+    public Clock obtenerReloj() {
+        return reloj;
+    }
 }
