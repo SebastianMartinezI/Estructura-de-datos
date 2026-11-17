@@ -1,10 +1,9 @@
-
-
 package co.edu.uniquindio.sga.interfaz.controladores;
 
 import co.edu.uniquindio.sga.interfaz.contexto.ContextoAplicacion;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Objects;
 
 import javafx.event.ActionEvent;
@@ -22,20 +21,19 @@ import javafx.scene.layout.StackPane;
  * Las reglas de negocio permanecen en los servicios inyectados
  * mediante el contexto de aplicación.
  *
- * La interfaz se limita a gestionar la navegación y presentación.
+ * Conserva los módulos de Juan y la vista de preparación de Cristian.
  */
 public final class PrincipalController {
 
     private final ContextoAplicacion contexto;
 
-    // Vistas de los módulos
     private Node panelInformativo;
     private Node vistaReservas;
     private Node vistaDisponibilidad;
     private Node vistaCalendario;
     private Node vistaHuespedes;
+    private Node vistaPreparacion;
 
-    // Componentes de la ventana principal
     @FXML
     private StackPane contenidoPrincipal;
 
@@ -51,9 +49,6 @@ public final class PrincipalController {
     @FXML
     private Label etiquetaSuperior;
 
-    /**
-     * Constructor con inyección del contexto de aplicación.
-     */
     public PrincipalController(ContextoAplicacion contexto) {
         this.contexto = Objects.requireNonNull(
                 contexto,
@@ -61,21 +56,14 @@ public final class PrincipalController {
         );
     }
 
-    /**
-     * Inicializa la ventana principal.
-     */
     @FXML
     private void initialize() {
         panelInformativo = contenidoPrincipal.getChildren().get(0);
         mostrar(Modulo.INICIO);
     }
 
-    /**
-     * Atiende las opciones seleccionadas en el menú lateral.
-     */
     @FXML
     private void seleccionarModulo(ActionEvent evento) {
-
         Button boton = (Button) evento.getSource();
         Object dato = boton.getUserData();
 
@@ -89,7 +77,6 @@ public final class PrincipalController {
 
         try {
             mostrar(Modulo.valueOf(codigo));
-
         } catch (IllegalArgumentException excepcion) {
             mostrarError(
                     "Opción no reconocida",
@@ -98,13 +85,8 @@ public final class PrincipalController {
         }
     }
 
-    /**
-     * Determina qué vista debe mostrarse según el módulo seleccionado.
-     */
     private void mostrar(Modulo modulo) {
-
         switch (modulo) {
-
             case RESERVAS:
                 mostrarVistaReservas();
                 return;
@@ -121,16 +103,16 @@ public final class PrincipalController {
                 mostrarVistaHuespedes();
                 return;
 
+            case PREPARACION:
+                mostrarVistaPreparacion();
+                return;
+
             default:
                 mostrarPanelInformativo(modulo);
         }
     }
 
-    /**
-     * Muestra el panel informativo para módulos pendientes.
-     */
     private void mostrarPanelInformativo(Modulo modulo) {
-
         contenidoPrincipal.getChildren().setAll(panelInformativo);
 
         tituloModulo.setText(modulo.titulo);
@@ -150,22 +132,18 @@ public final class PrincipalController {
     }
 
     /**
-     * Carga y muestra la pantalla de reservas.
+     * Carga y muestra la pantalla de reservas de Juan.
      */
     private void mostrarVistaReservas() {
-
         try {
-
             if (vistaReservas == null) {
-
                 FXMLLoader cargador = new FXMLLoader(
-                        getClass().getResource(
+                        buscarVista(
                                 "/co/edu/uniquindio/sga/vistas/reservas.fxml"
                         )
                 );
 
                 cargador.setControllerFactory(tipo -> {
-
                     if (tipo == ReservasController.class) {
                         return new ReservasController(contexto);
                     }
@@ -180,13 +158,11 @@ public final class PrincipalController {
             }
 
             contenidoPrincipal.getChildren().setAll(vistaReservas);
-
             etiquetaSuperior.setText(
                     "RESERVAS · DATOS TEMPORALES"
             );
 
         } catch (IOException | RuntimeException excepcion) {
-
             excepcion.printStackTrace();
 
             mostrarError(
@@ -200,22 +176,18 @@ public final class PrincipalController {
     }
 
     /**
-     * Carga y muestra la pantalla de disponibilidad.
+     * Carga y muestra la pantalla de disponibilidad de Juan.
      */
     private void mostrarVistaDisponibilidad() {
-
         try {
-
             if (vistaDisponibilidad == null) {
-
                 FXMLLoader cargador = new FXMLLoader(
-                        getClass().getResource(
+                        buscarVista(
                                 "/co/edu/uniquindio/sga/vistas/disponibilidad.fxml"
                         )
                 );
 
                 cargador.setControllerFactory(tipo -> {
-
                     if (tipo == DisponibilidadController.class) {
                         return new DisponibilidadController(contexto);
                     }
@@ -230,13 +202,11 @@ public final class PrincipalController {
             }
 
             contenidoPrincipal.getChildren().setAll(vistaDisponibilidad);
-
             etiquetaSuperior.setText(
                     "DISPONIBILIDAD · DATOS TEMPORALES"
             );
 
         } catch (IOException | RuntimeException excepcion) {
-
             excepcion.printStackTrace();
 
             mostrarError(
@@ -250,22 +220,18 @@ public final class PrincipalController {
     }
 
     /**
-     * Carga y muestra el calendario mensual de ocupación.
+     * Carga y muestra el calendario mensual de Juan.
      */
     private void mostrarVistaCalendario() {
-
         try {
-
             if (vistaCalendario == null) {
-
                 FXMLLoader cargador = new FXMLLoader(
-                        getClass().getResource(
+                        buscarVista(
                                 "/co/edu/uniquindio/sga/vistas/calendario.fxml"
                         )
                 );
 
                 cargador.setControllerFactory(tipo -> {
-
                     if (tipo == CalendarioController.class) {
                         return new CalendarioController(contexto);
                     }
@@ -280,13 +246,11 @@ public final class PrincipalController {
             }
 
             contenidoPrincipal.getChildren().setAll(vistaCalendario);
-
             etiquetaSuperior.setText(
                     "CALENDARIO · DATOS TEMPORALES"
             );
 
         } catch (IOException | RuntimeException excepcion) {
-
             excepcion.printStackTrace();
 
             mostrarError(
@@ -300,22 +264,18 @@ public final class PrincipalController {
     }
 
     /**
-     * Carga y muestra el módulo de gestión de huéspedes.
+     * Carga y muestra el módulo de huéspedes de Juan.
      */
     private void mostrarVistaHuespedes() {
-
         try {
-
             if (vistaHuespedes == null) {
-
                 FXMLLoader cargador = new FXMLLoader(
-                        getClass().getResource(
+                        buscarVista(
                                 "/co/edu/uniquindio/sga/vistas/huespedes.fxml"
                         )
                 );
 
                 cargador.setControllerFactory(tipo -> {
-
                     if (tipo == HuespedController.class) {
                         return new HuespedController(contexto);
                     }
@@ -330,13 +290,11 @@ public final class PrincipalController {
             }
 
             contenidoPrincipal.getChildren().setAll(vistaHuespedes);
-
             etiquetaSuperior.setText(
                     "HUÉSPEDES · DATOS TEMPORALES"
             );
 
         } catch (IOException | RuntimeException excepcion) {
-
             excepcion.printStackTrace();
 
             mostrarError(
@@ -350,22 +308,67 @@ public final class PrincipalController {
     }
 
     /**
-     * Obtiene un mensaje de error legible.
+     * Carga y muestra el módulo de preparación de Cristian.
      */
+    private void mostrarVistaPreparacion() {
+        try {
+            if (vistaPreparacion == null) {
+                FXMLLoader cargador = new FXMLLoader(
+                        buscarVista(
+                                "/co/edu/uniquindio/sga/vistas/VistaPreparacion.fxml"
+                        )
+                );
+
+                vistaPreparacion = cargador.load();
+            }
+
+            contenidoPrincipal.getChildren().setAll(vistaPreparacion);
+            etiquetaSuperior.setText(
+                    "PREPARACIÓN · CRISTIAN"
+            );
+
+        } catch (IOException | RuntimeException excepcion) {
+            excepcion.printStackTrace();
+
+            mostrarError(
+                    "No se pudo abrir Preparación",
+                    obtenerMensajeError(
+                            excepcion,
+                            "Verifica VistaPreparacion.fxml "
+                                    + "y VistaPreparacionController."
+                    )
+            );
+        }
+    }
+
+    /**
+     * Comprueba la existencia del recurso antes de cargarlo.
+     */
+    private URL buscarVista(String ruta) {
+        URL recurso = getClass().getResource(ruta);
+
+        if (recurso == null) {
+            throw new IllegalStateException(
+                    "No se encontró el archivo FXML:\n"
+                            + ruta
+                            + "\n\nDebe estar dentro de src/main/resources"
+                            + " conservando esa estructura de carpetas."
+            );
+        }
+
+        return recurso;
+    }
+
     private String obtenerMensajeError(
             Exception excepcion,
-            String mensajePredeterminado) {
-
+            String mensajePredeterminado
+    ) {
         return excepcion.getMessage() == null
                 ? mensajePredeterminado
                 : excepcion.getMessage();
     }
 
-    /**
-     * Presenta mensajes de error de la interfaz.
-     */
     private void mostrarError(String titulo, String mensaje) {
-
         Alert alerta = new Alert(Alert.AlertType.ERROR);
 
         alerta.setTitle(titulo);
@@ -375,9 +378,6 @@ public final class PrincipalController {
         alerta.showAndWait();
     }
 
-    /**
-     * Secciones disponibles en el menú principal.
-     */
     private enum Modulo {
 
         INICIO(

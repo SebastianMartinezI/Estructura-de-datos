@@ -1,59 +1,85 @@
 package co.edu.uniquindio.sga.interfaz;
 
 import co.edu.uniquindio.sga.dominio.modelo.Estancia;
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 
-/** Mini demostración funcional del recorrido de noches con Iterator. */
-public final class PanelEstancia extends JPanel {
-    private final JTextField campoEntrada = new JTextField("2026-11-10", 12);
-    private final JTextField campoSalida = new JTextField("2026-11-12", 12);
-    private final JTextArea salida = new JTextArea();
+import java.time.LocalDate;
+
+/** Panel JavaFX para consultar las noches de una estancia. */
+public final class PanelEstancia extends BorderPane {
+
+    private final DatePicker campoEntrada =
+            new DatePicker(LocalDate.now());
+
+    private final DatePicker campoSalida =
+            new DatePicker(LocalDate.now().plusDays(1));
+
+    private final TextArea salida = new TextArea();
 
     public PanelEstancia() {
-        super(new BorderLayout(10, 10));
-        setBorder(BorderFactory.createEmptyBorder(24, 24, 24, 24));
+        setPadding(new Insets(24));
 
-        JPanel formulario = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 6));
-        formulario.add(new JLabel("Entrada (AAAA-MM-DD):"));
-        formulario.add(campoEntrada);
-        formulario.add(new JLabel("Salida:"));
-        formulario.add(campoSalida);
-        JButton boton = new JButton("Calcular noches");
-        boton.addActionListener(e -> calcular());
-        formulario.add(boton);
-        add(formulario, BorderLayout.NORTH);
+        // Se seleccionan las fechas desde el calendario.
+        campoEntrada.setEditable(false);
+        campoSalida.setEditable(false);
+
+        Button botonCalcular = new Button("Calcular noches");
+        botonCalcular.setOnAction(evento -> calcular());
+
+        HBox formulario = new HBox(
+                12,
+                new Label("Entrada:"),
+                campoEntrada,
+                new Label("Salida:"),
+                campoSalida,
+                botonCalcular
+        );
+
+        formulario.setPadding(new Insets(0, 0, 16, 0));
 
         salida.setEditable(false);
-        salida.setLineWrap(true);
-        salida.setWrapStyleWord(true);
-        add(new JScrollPane(salida), BorderLayout.CENTER);
+        salida.setWrapText(true);
+
+        setTop(formulario);
+        setCenter(salida);
+
         calcular();
     }
 
     private void calcular() {
+        LocalDate entrada = campoEntrada.getValue();
+        LocalDate fechaSalida = campoSalida.getValue();
+
+        if (entrada == null || fechaSalida == null) {
+            salida.setText("Selecciona las fechas de entrada y salida.");
+            return;
+        }
+
         try {
-            Estancia estancia = new Estancia(
-                    LocalDate.parse(campoEntrada.getText().trim()),
-                    LocalDate.parse(campoSalida.getText().trim()));
+            Estancia estancia = new Estancia(entrada, fechaSalida);
+
             StringBuilder detalle = new StringBuilder();
-            detalle.append("Noches a cobrar: ").append(estancia.numeroNoches()).append("\n\n");
+
+            detalle.append("Noches a cobrar: ")
+                    .append(estancia.numeroNoches())
+                    .append("\n\n");
+
             for (LocalDate noche : estancia) {
-                detalle.append("- ").append(noche).append('\n');
+                detalle.append("- ")
+                        .append(noche)
+                        .append('\n');
             }
-            detalle.append("\nLa noche de salida NO se cobra.");
+
+            detalle.append("\nLa noche de salida no se cobra.");
+
             salida.setText(detalle.toString());
-        } catch (DateTimeParseException ex) {
-            salida.setText("Error: escribe las fechas con formato AAAA-MM-DD.");
+
         } catch (IllegalArgumentException ex) {
             salida.setText("Error: " + ex.getMessage());
         }

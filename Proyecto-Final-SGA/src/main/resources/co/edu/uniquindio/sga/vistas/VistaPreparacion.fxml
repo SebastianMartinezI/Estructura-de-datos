@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="co.edu.uniquindio.sga.interfaz.preparacion.VistaPreparacionController"
+      spacing="14"
+      fillWidth="true"
+      style="-fx-background-color: #f4f6f8;">
+
+    <padding>
+        <Insets top="24" right="24" bottom="24" left="24"/>
+    </padding>
+
+    <Label text="Gestión de preparación"
+           style="-fx-font-size: 26px; -fx-font-weight: bold;"/>
+
+    <Label text="Entradas de hoy primero, ordenadas por hora de llegada."
+           wrapText="true"/>
+
+    <Label fx:id="lblResumen"
+           style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+
+    <TitledPane text="Registrar apartamento pendiente"
+                expanded="true" collapsible="false">
+        <VBox spacing="10">
+            <HBox spacing="12" alignment="CENTER_LEFT">
+                <Label text="Apartamento:"/>
+                <ComboBox fx:id="cmbApartamento" prefWidth="145"/>
+                <Label text="Próxima entrada:"/>
+                <DatePicker fx:id="fechaLlegada" prefWidth="150"/>
+            </HBox>
+
+            <HBox spacing="12" alignment="CENTER_LEFT">
+                <Label text="Hora (HH:mm):"/>
+                <TextField fx:id="txtHora"
+                           promptText="14:00"
+                           prefWidth="85"/>
+                <Button text="Registrar pendiente"
+                        onAction="#registrarPendiente"/>
+            </HBox>
+
+            <Label text="Deja la fecha vacía si no hay próxima entrada programada."
+                   wrapText="true"/>
+        </VBox>
+    </TitledPane>
+
+    <Label text="Cola de preparación"
+           style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+    <TableView fx:id="tablaTareas" prefHeight="230" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colApartamento"
+                         text="Apartamento" prefWidth="110"/>
+            <TableColumn fx:id="colPrioridad"
+                         text="Prioridad" prefWidth="125"/>
+            <TableColumn fx:id="colLlegada"
+                         text="Próxima llegada" prefWidth="155"/>
+            <TableColumn fx:id="colEstado"
+                         text="Estado de tarea" prefWidth="155"/>
+            <TableColumn fx:id="colPersonal"
+                         text="Responsable" prefWidth="115"/>
+        </columns>
+        <placeholder>
+            <Label text="No hay tareas. Registra un apartamento pendiente."/>
+        </placeholder>
+    </TableView>
+
+    <HBox spacing="10">
+        <Button text="Asignar siguiente" onAction="#asignarSiguiente"/>
+        <Button text="Iniciar preparación" onAction="#iniciarPreparacion"/>
+        <Button text="Finalizar preparación" onAction="#marcarPreparado"/>
+        <Button text="Actualizar" onAction="#actualizar"/>
+    </HBox>
+
+    <Label text="Ruta desde recepción al apartamento seleccionado"
+           style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+
+    <Label fx:id="lblRuta"
+           text="Selecciona una tarea para consultar la ruta."
+           wrapText="true"/>
+
+    <Label fx:id="lblMensaje" wrapText="true"/>
+
+</VBox>

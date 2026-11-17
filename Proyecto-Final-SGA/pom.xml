@@ -7,10 +7,6 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- ======================================== -->
-    <!-- INFORMACION GENERAL DEL PROYECTO         -->
-    <!-- ======================================== -->
-
     <groupId>co.edu.uniquindio</groupId>
     <artifactId>sga-alojamiento</artifactId>
     <version>0.1.0-SNAPSHOT</version>
@@ -18,45 +14,30 @@
     <name>SGA - Aparta-Suites UQ</name>
     <description>
         Proyecto final de Estructuras de Datos 2026-2.
-        Sistema de Gestion de Alojamiento.
+        Sistema de Gestión de Alojamiento.
     </description>
-
-    <!-- ======================================== -->
-    <!-- PROPIEDADES Y VERSIONES                  -->
-    <!-- ======================================== -->
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-        <!-- Version del JDK -->
         <maven.compiler.release>17</maven.compiler.release>
-
-        <!-- Versiones de dependencias -->
-        <javafx.version>21.0.13</javafx.version>
+        <javafx.version>17.0.1</javafx.version>
         <junit.version>5.11.4</junit.version>
     </properties>
 
-    <!-- ======================================== -->
-    <!-- DEPENDENCIAS DEL PROYECTO                -->
-    <!-- ======================================== -->
-
     <dependencies>
 
-        <!-- JavaFX: componentes graficos -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>${javafx.version}</version>
         </dependency>
 
-        <!-- JavaFX: interfaces FXML -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
         </dependency>
 
-        <!-- JUnit 5: pruebas unitarias -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -66,14 +47,9 @@
 
     </dependencies>
 
-    <!-- ======================================== -->
-    <!-- CONFIGURACION DE COMPILACION             -->
-    <!-- ======================================== -->
-
     <build>
         <plugins>
 
-            <!-- Compilador Java 17 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -83,7 +59,6 @@
                 </configuration>
             </plugin>
 
-            <!-- Ejecucion de pruebas JUnit -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -93,7 +68,6 @@
                 </configuration>
             </plugin>
 
-            <!-- Ejecucion de la aplicacion JavaFX -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
@@ -103,7 +77,6 @@
                 </configuration>
             </plugin>
 
-            <!-- Configuracion del archivo JAR -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -111,9 +84,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>
-                                co.edu.uniquindio.sga.Main
-                            </mainClass>
+                            <mainClass>co.edu.uniquindio.sga.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
