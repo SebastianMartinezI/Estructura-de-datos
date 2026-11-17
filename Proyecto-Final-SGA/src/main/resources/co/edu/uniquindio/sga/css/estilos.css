@@ -426,3 +426,81 @@
     -fx-background-color: #f9dddd;
     -fx-text-fill: #a33d3d;
 }
+
+/* ==========================================
+   MODULO DE GESTION DE HUESPEDES
+   Estilos de presentación exclusivamente
+   ========================================== */
+
+/* Campos de entrada */
+.reservas-root .text-field,
+.reservas-root .date-picker,
+.reservas-root .combo-box {
+    -fx-font-size: 11px;
+    -fx-background-radius: 7;
+    -fx-border-radius: 7;
+    -fx-border-color: #dbe3ec;
+    -fx-background-color: white;
+    -fx-pref-height: 34px;
+}
+
+.reservas-root .text-field:focused,
+.reservas-root .date-picker:focused,
+.reservas-root .combo-box:focused {
+    -fx-border-color: #1d5d8f;
+    -fx-border-width: 1.2;
+}
+
+/* Listas de favoritos e historial */
+.reservas-root .list-view {
+    -fx-background-color: #f8fafc;
+    -fx-background-radius: 8;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 8;
+    -fx-padding: 4;
+    -fx-font-size: 11px;
+}
+
+/* Elementos de las listas */
+.reservas-root .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #334155;
+    -fx-padding: 9 10;
+}
+
+.reservas-root .list-cell:filled:hover {
+    -fx-background-color: #eef3f8;
+}
+
+.reservas-root .list-cell:filled:selected {
+    -fx-background-color: #dceaf6;
+    -fx-text-fill: #173b5d;
+}
+
+/* Mensajes de listas vacías */
+.reservas-root .list-cell:empty {
+    -fx-background-color: transparent;
+}
+
+/* Combobox de apartamentos */
+.reservas-root .combo-box .list-cell {
+    -fx-padding: 7 9;
+}
+
+/* Espaciado y presentación de tarjetas */
+.reservas-root .section-card {
+    -fx-background-radius: 12;
+    -fx-padding: 18;
+}
+
+/* Etiquetas de información del huésped */
+.reservas-root .inline-status {
+    -fx-wrap-text: true;
+}
+
+/* Botones de interacción */
+.reservas-root .primary-button,
+.reservas-root .secondary-button,
+.reservas-root .quiet-button {
+    -fx-cursor: hand;
+}
