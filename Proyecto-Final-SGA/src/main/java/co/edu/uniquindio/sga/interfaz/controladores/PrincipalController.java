@@ -18,8 +18,10 @@ import javafx.scene.layout.StackPane;
 /**
  * Controla la navegación principal y carga las vistas de cada módulo.
  *
- * Conserva los módulos comerciales de Juan y agrega
- * la pantalla de preparación de Cristian.
+ * Las reglas de negocio permanecen en los servicios inyectados
+ * mediante el contexto de aplicación.
+ *
+ * Conserva los módulos de Juan y la vista de preparación de Cristian.
  */
 public final class PrincipalController {
 
@@ -60,9 +62,6 @@ public final class PrincipalController {
         mostrar(Modulo.INICIO);
     }
 
-    /**
-     * Atiende las opciones del menú lateral.
-     */
     @FXML
     private void seleccionarModulo(ActionEvent evento) {
         Button boton = (Button) evento.getSource();
@@ -78,7 +77,6 @@ public final class PrincipalController {
 
         try {
             mostrar(Modulo.valueOf(codigo));
-
         } catch (IllegalArgumentException excepcion) {
             mostrarError(
                     "Opción no reconocida",
@@ -87,9 +85,6 @@ public final class PrincipalController {
         }
     }
 
-    /**
-     * Determina qué pantalla debe mostrarse.
-     */
     private void mostrar(Modulo modulo) {
         switch (modulo) {
             case RESERVAS:
@@ -117,10 +112,6 @@ public final class PrincipalController {
         }
     }
 
-    /**
-     * Conserva el panel informativo para Inicio
-     * y los módulos que todavía no tienen una vista conectada.
-     */
     private void mostrarPanelInformativo(Modulo modulo) {
         contenidoPrincipal.getChildren().setAll(panelInformativo);
 
@@ -141,7 +132,7 @@ public final class PrincipalController {
     }
 
     /**
-     * Módulo de reservas de Juan.
+     * Carga y muestra la pantalla de reservas de Juan.
      */
     private void mostrarVistaReservas() {
         try {
@@ -185,7 +176,7 @@ public final class PrincipalController {
     }
 
     /**
-     * Módulo de disponibilidad de Juan.
+     * Carga y muestra la pantalla de disponibilidad de Juan.
      */
     private void mostrarVistaDisponibilidad() {
         try {
@@ -229,7 +220,7 @@ public final class PrincipalController {
     }
 
     /**
-     * Calendario mensual de Juan.
+     * Carga y muestra el calendario mensual de Juan.
      */
     private void mostrarVistaCalendario() {
         try {
@@ -273,8 +264,7 @@ public final class PrincipalController {
     }
 
     /**
-     * Módulo de huéspedes de Juan.
-     * Conserva la inyección del contexto compartido.
+     * Carga y muestra el módulo de huéspedes de Juan.
      */
     private void mostrarVistaHuespedes() {
         try {
@@ -311,15 +301,14 @@ public final class PrincipalController {
                     "No se pudo abrir Huéspedes",
                     obtenerMensajeError(
                             excepcion,
-                            "Verifica huespedes.fxml y HuespedController."
+                            "Verifica huespedes.fxml y su controlador."
                     )
             );
         }
     }
 
     /**
-     * Módulo de preparación de Cristian.
-     * Su controlador está declarado dentro del FXML.
+     * Carga y muestra el módulo de preparación de Cristian.
      */
     private void mostrarVistaPreparacion() {
         try {
@@ -353,7 +342,7 @@ public final class PrincipalController {
     }
 
     /**
-     * Comprueba que el recurso exista antes de cargarlo.
+     * Comprueba la existencia del recurso antes de cargarlo.
      */
     private URL buscarVista(String ruta) {
         URL recurso = getClass().getResource(ruta);
@@ -370,9 +359,6 @@ public final class PrincipalController {
         return recurso;
     }
 
-    /**
-     * Obtiene un mensaje legible para los errores.
-     */
     private String obtenerMensajeError(
             Exception excepcion,
             String mensajePredeterminado
@@ -382,9 +368,6 @@ public final class PrincipalController {
                 : excepcion.getMessage();
     }
 
-    /**
-     * Presenta los errores sin cerrar la aplicación.
-     */
     private void mostrarError(String titulo, String mensaje) {
         Alert alerta = new Alert(Alert.AlertType.ERROR);
 
@@ -395,9 +378,6 @@ public final class PrincipalController {
         alerta.showAndWait();
     }
 
-    /**
-     * Conserva todas las opciones del menú principal.
-     */
     private enum Modulo {
 
         INICIO(
