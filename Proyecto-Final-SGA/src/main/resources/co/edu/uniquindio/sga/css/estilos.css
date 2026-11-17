@@ -262,3 +262,167 @@
     -fx-border-color: #e2e8f0;
     -fx-border-radius: 6;
 }
+
+/* ==========================================
+   CALENDARIO DE OCUPACIÓN
+   Presentación visual del módulo
+   ========================================== */
+
+.calendario-scroll-interno {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+}
+
+.calendario-grid {
+    -fx-background-color: white;
+    -fx-padding: 4;
+}
+
+.calendario-encabezado {
+    -fx-background-color: #eaf1f9;
+    -fx-background-radius: 5;
+    -fx-text-fill: #20334b;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+    -fx-padding: 8 4;
+    -fx-min-height: 38px;
+}
+
+.calendario-apartamento {
+    -fx-background-color: #f5f8fc;
+    -fx-background-radius: 5;
+    -fx-text-fill: #20334b;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-padding: 7 9;
+    -fx-alignment: CENTER_LEFT;
+    -fx-min-height: 36px;
+}
+
+.calendario-estado-operativo {
+    -fx-background-radius: 5;
+    -fx-font-size: 9px;
+    -fx-font-weight: bold;
+    -fx-padding: 6 5;
+    -fx-alignment: CENTER;
+    -fx-min-height: 36px;
+}
+
+/* Estados operativos */
+
+.estado-operativo-preparado {
+    -fx-background-color: #e8f5ed;
+    -fx-text-fill: #287447;
+}
+
+.estado-operativo-ocupado {
+    -fx-background-color: #eaf1fb;
+    -fx-text-fill: #285b91;
+}
+
+.estado-operativo-pendiente-preparacion {
+    -fx-background-color: #fff4dc;
+    -fx-text-fill: #91651b;
+}
+
+.estado-operativo-en-preparacion {
+    -fx-background-color: #f0eafa;
+    -fx-text-fill: #7045a1;
+}
+
+.estado-operativo-fuera-de-servicio {
+    -fx-background-color: #fde9e9;
+    -fx-text-fill: #a33d3d;
+}
+
+/* Celdas de ocupación */
+
+.calendario-celda {
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-border-color: transparent;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 2;
+}
+
+.calendario-celda:hover {
+    -fx-border-color: #526d89;
+    -fx-border-width: 1;
+}
+
+/* Noches disponibles */
+
+.celda-disponible {
+    -fx-background-color: #e8f5ed;
+    -fx-text-fill: #287447;
+}
+
+/* Reservas pendientes */
+
+.celda-pendiente {
+    -fx-background-color: #fff1cf;
+    -fx-text-fill: #91651b;
+}
+
+/* Reservas confirmadas */
+
+.celda-confirmada {
+    -fx-background-color: #dceafb;
+    -fx-text-fill: #285b91;
+}
+
+/* Reservas en curso */
+
+.celda-en-curso {
+    -fx-background-color: #eee3fa;
+    -fx-text-fill: #7045a1;
+}
+
+/* Apartamentos fuera de servicio */
+
+.celda-fuera-servicio {
+    -fx-background-color: #f9dddd;
+    -fx-text-fill: #a33d3d;
+}
+
+/* Leyenda */
+
+.leyenda-disponible,
+.leyenda-pendiente,
+.leyenda-confirmada,
+.leyenda-en-curso,
+.leyenda-fuera-servicio {
+    -fx-background-radius: 6;
+    -fx-padding: 7 9;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
+.leyenda-disponible {
+    -fx-background-color: #e8f5ed;
+    -fx-text-fill: #287447;
+}
+
+.leyenda-pendiente {
+    -fx-background-color: #fff1cf;
+    -fx-text-fill: #91651b;
+}
+
+.leyenda-confirmada {
+    -fx-background-color: #dceafb;
+    -fx-text-fill: #285b91;
+}
+
+.leyenda-en-curso {
+    -fx-background-color: #eee3fa;
+    -fx-text-fill: #7045a1;
+}
+
+.leyenda-fuera-servicio {
+    -fx-background-color: #f9dddd;
+    -fx-text-fill: #a33d3d;
+}
