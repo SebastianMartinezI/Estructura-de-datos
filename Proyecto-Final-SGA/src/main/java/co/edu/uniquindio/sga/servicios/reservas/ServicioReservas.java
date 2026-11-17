@@ -6,7 +6,9 @@ import co.edu.uniquindio.sga.dominio.modelo.Reserva;
 import co.edu.uniquindio.sga.estructuras.arbol.ArbolBinarioBusqueda;
 import co.edu.uniquindio.sga.excepciones.AnticipoInsuficienteException;
 import co.edu.uniquindio.sga.excepciones.EstadoReservaInvalidoException;
-
+import co.edu.uniquindio.sga.dominio.modelo.Apartamento;
+import co.edu.uniquindio.sga.dominio.modelo.Estancia;
+import co.edu.uniquindio.sga.dominio.modelo.Ocupante;
 import java.math.BigDecimal;
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -44,6 +46,22 @@ public final class ServicioReservas {
         this.liquidacion = Objects.requireNonNull(liquidacion, "Liquidación obligatoria");
         this.consultaAnticipos = Objects.requireNonNull(consultaAnticipos, "Consulta de folio obligatoria");
         this.reloj = Objects.requireNonNull(reloj, "Reloj obligatorio");
+    }
+
+    /**
+     * Cotiza una estancia sin registrar una reserva,
+     * bloquear noches ni almacenar una cotización.
+     */
+    public BigDecimal cotizarPrevia(
+            Apartamento apartamento,
+            Estancia estancia,
+            Iterable<Ocupante> ocupantes) {
+
+        return liquidacion.cotizarTotal(
+                apartamento,
+                estancia,
+                ocupantes
+        );
     }
 
     /**
