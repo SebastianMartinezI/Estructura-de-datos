@@ -1,4 +1,5 @@
 
+
 package co.edu.uniquindio.sga.interfaz.controladores;
 
 import co.edu.uniquindio.sga.interfaz.contexto.ContextoAplicacion;
@@ -10,7 +11,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,18 +18,24 @@ import javafx.scene.layout.StackPane;
 
 /**
  * Controla la navegación principal y carga las vistas de cada módulo.
+ *
  * Las reglas de negocio permanecen en los servicios inyectados
- * en el contexto de aplicación.
+ * mediante el contexto de aplicación.
+ *
+ * La interfaz se limita a gestionar la navegación y presentación.
  */
 public final class PrincipalController {
 
     private final ContextoAplicacion contexto;
 
+    // Vistas de los módulos
     private Node panelInformativo;
     private Node vistaReservas;
     private Node vistaDisponibilidad;
     private Node vistaCalendario;
+    private Node vistaHuespedes;
 
+    // Componentes de la ventana principal
     @FXML
     private StackPane contenidoPrincipal;
 
@@ -45,6 +51,9 @@ public final class PrincipalController {
     @FXML
     private Label etiquetaSuperior;
 
+    /**
+     * Constructor con inyección del contexto de aplicación.
+     */
     public PrincipalController(ContextoAplicacion contexto) {
         this.contexto = Objects.requireNonNull(
                 contexto,
@@ -52,6 +61,9 @@ public final class PrincipalController {
         );
     }
 
+    /**
+     * Inicializa la ventana principal.
+     */
     @FXML
     private void initialize() {
         panelInformativo = contenidoPrincipal.getChildren().get(0);
@@ -59,13 +71,21 @@ public final class PrincipalController {
     }
 
     /**
-     * Atiende las opciones del menú y carga la vista correspondiente.
+     * Atiende las opciones seleccionadas en el menú lateral.
      */
     @FXML
     private void seleccionarModulo(ActionEvent evento) {
 
         Button boton = (Button) evento.getSource();
-        String codigo = (String) boton.getUserData();
+        Object dato = boton.getUserData();
+
+        if (!(dato instanceof String codigo) || codigo.isBlank()) {
+            mostrarError(
+                    "Opción no reconocida",
+                    "No se ha definido correctamente el módulo seleccionado."
+            );
+            return;
+        }
 
         try {
             mostrar(Modulo.valueOf(codigo));
@@ -79,24 +99,37 @@ public final class PrincipalController {
     }
 
     /**
-     * Determina qué pantalla debe mostrarse.
+     * Determina qué vista debe mostrarse según el módulo seleccionado.
      */
     private void mostrar(Modulo modulo) {
 
-        if (modulo == Modulo.RESERVAS) {
-            mostrarVistaReservas();
-            return;
-        }
+        switch (modulo) {
 
-        if (modulo == Modulo.DISPONIBILIDAD) {
-            mostrarVistaDisponibilidad();
-            return;
-        }
+            case RESERVAS:
+                mostrarVistaReservas();
+                return;
 
-        if (modulo == Modulo.CALENDARIO) {
-            mostrarVistaCalendario();
-            return;
+            case DISPONIBILIDAD:
+                mostrarVistaDisponibilidad();
+                return;
+
+            case CALENDARIO:
+                mostrarVistaCalendario();
+                return;
+
+            case HUESPEDES:
+                mostrarVistaHuespedes();
+                return;
+
+            default:
+                mostrarPanelInformativo(modulo);
         }
+    }
+
+    /**
+     * Muestra el panel informativo para módulos pendientes.
+     */
+    private void mostrarPanelInformativo(Modulo modulo) {
 
         contenidoPrincipal.getChildren().setAll(panelInformativo);
 
@@ -114,6 +147,56 @@ public final class PrincipalController {
                         ? "DATOS TEMPORALES · DEMO"
                         : "MÓDULO EN DESARROLLO"
         );
+    }
+
+    /**
+     * Carga y muestra la pantalla de reservas.
+     */
+    private void mostrarVistaReservas() {
+
+        try {
+
+            if (vistaReservas == null) {
+
+                FXMLLoader cargador = new FXMLLoader(
+                        getClass().getResource(
+                                "/co/edu/uniquindio/sga/vistas/reservas.fxml"
+                        )
+                );
+
+                cargador.setControllerFactory(tipo -> {
+
+                    if (tipo == ReservasController.class) {
+                        return new ReservasController(contexto);
+                    }
+
+                    throw new IllegalArgumentException(
+                            "No existe una fábrica de controladores para "
+                                    + tipo.getName()
+                    );
+                });
+
+                vistaReservas = cargador.load();
+            }
+
+            contenidoPrincipal.getChildren().setAll(vistaReservas);
+
+            etiquetaSuperior.setText(
+                    "RESERVAS · DATOS TEMPORALES"
+            );
+
+        } catch (IOException | RuntimeException excepcion) {
+
+            excepcion.printStackTrace();
+
+            mostrarError(
+                    "No se pudo abrir Reservas",
+                    obtenerMensajeError(
+                            excepcion,
+                            "Verifica reservas.fxml y su controlador."
+                    )
+            );
+        }
     }
 
     /**
@@ -158,60 +241,10 @@ public final class PrincipalController {
 
             mostrarError(
                     "No se pudo abrir Disponibilidad",
-                    excepcion.getMessage() == null
-                            ? "Verifica disponibilidad.fxml y su controlador."
-                            : excepcion.getMessage()
-            );
-        }
-    }
-
-
-    /**
-     * Carga y muestra la pantalla de reservas.
-     */
-    private void mostrarVistaReservas() {
-
-        try {
-
-            if (vistaReservas == null) {
-
-                FXMLLoader cargador = new FXMLLoader(
-                        getClass().getResource(
-                                "/co/edu/uniquindio/sga/vistas/reservas.fxml"
-                        )
-                );
-
-                cargador.setControllerFactory(tipo -> {
-
-                    if (tipo == ReservasController.class) {
-                        return new ReservasController(contexto);
-                    }
-
-                    throw new IllegalArgumentException(
-                            "No existe una fábrica de controladores para "
-                                    + tipo.getName()
-                    );
-                });
-
-                Parent vista = cargador.load();
-                vistaReservas = vista;
-            }
-
-            contenidoPrincipal.getChildren().setAll(vistaReservas);
-
-            etiquetaSuperior.setText(
-                    "RESERVAS · DATOS TEMPORALES"
-            );
-
-        } catch (IOException | RuntimeException excepcion) {
-
-            excepcion.printStackTrace();
-
-            mostrarError(
-                    "No se pudo abrir Reservas",
-                    excepcion.getMessage() == null
-                            ? "Verifica reservas.fxml y su controlador."
-                            : excepcion.getMessage()
+                    obtenerMensajeError(
+                            excepcion,
+                            "Verifica disponibilidad.fxml y su controlador."
+                    )
             );
         }
     }
@@ -258,15 +291,78 @@ public final class PrincipalController {
 
             mostrarError(
                     "No se pudo abrir Calendario",
-                    excepcion.getMessage() == null
-                            ? "Verifica calendario.fxml y su controlador."
-                            : excepcion.getMessage()
+                    obtenerMensajeError(
+                            excepcion,
+                            "Verifica calendario.fxml y su controlador."
+                    )
             );
         }
     }
 
     /**
-     * Muestra mensajes de error de la interfaz.
+     * Carga y muestra el módulo de gestión de huéspedes.
+     */
+    private void mostrarVistaHuespedes() {
+
+        try {
+
+            if (vistaHuespedes == null) {
+
+                FXMLLoader cargador = new FXMLLoader(
+                        getClass().getResource(
+                                "/co/edu/uniquindio/sga/vistas/huespedes.fxml"
+                        )
+                );
+
+                cargador.setControllerFactory(tipo -> {
+
+                    if (tipo == HuespedController.class) {
+                        return new HuespedController(contexto);
+                    }
+
+                    throw new IllegalArgumentException(
+                            "No existe una fábrica de controladores para "
+                                    + tipo.getName()
+                    );
+                });
+
+                vistaHuespedes = cargador.load();
+            }
+
+            contenidoPrincipal.getChildren().setAll(vistaHuespedes);
+
+            etiquetaSuperior.setText(
+                    "HUÉSPEDES · DATOS TEMPORALES"
+            );
+
+        } catch (IOException | RuntimeException excepcion) {
+
+            excepcion.printStackTrace();
+
+            mostrarError(
+                    "No se pudo abrir Huéspedes",
+                    obtenerMensajeError(
+                            excepcion,
+                            "Verifica huespedes.fxml y su controlador."
+                    )
+            );
+        }
+    }
+
+    /**
+     * Obtiene un mensaje de error legible.
+     */
+    private String obtenerMensajeError(
+            Exception excepcion,
+            String mensajePredeterminado) {
+
+        return excepcion.getMessage() == null
+                ? mensajePredeterminado
+                : excepcion.getMessage();
+    }
+
+    /**
+     * Presenta mensajes de error de la interfaz.
      */
     private void mostrarError(String titulo, String mensaje) {
 
@@ -280,7 +376,7 @@ public final class PrincipalController {
     }
 
     /**
-     * Secciones del menú principal.
+     * Secciones disponibles en el menú principal.
      */
     private enum Modulo {
 
