@@ -1,5 +1,9 @@
 package co.edu.uniquindio.sga.interfaz;
 
+import co.edu.uniquindio.sga.interfaz.contexto.ContextoAplicacion;
+import co.edu.uniquindio.sga.interfaz.controladores.PrincipalController;
+import co.edu.uniquindio.sga.interfaz.demo.FabricaContextoDemo;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
@@ -9,10 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/**
- * Inicia la interfaz gráfica JavaFX del Sistema de Gestión de Alojamiento.
- * No contiene reglas de negocio ni dependencias de las estructuras propias.
- */
+/** Inicia JavaFX y construye una única instancia compartida de los servicios. */
 public final class SgaApplication extends Application {
 
     @Override
@@ -24,13 +25,23 @@ public final class SgaApplication extends Application {
                 getClass().getResource("/co/edu/uniquindio/sga/css/estilos.css"),
                 "No se encontró la hoja estilos.css");
 
-        Parent contenido = FXMLLoader.load(vista);
-        Scene escena = new Scene(contenido, 1100, 700);
+        ContextoAplicacion contexto = FabricaContextoDemo.crear();
+        FXMLLoader cargador = new FXMLLoader(vista);
+        cargador.setControllerFactory(tipo -> {
+            if (tipo == PrincipalController.class) {
+                return new PrincipalController(contexto);
+            }
+            throw new IllegalArgumentException(
+                    "No existe una fábrica de controladores para " + tipo.getName());
+        });
+
+        Parent contenido = cargador.load();
+        Scene escena = new Scene(contenido, 1180, 820);
         escena.getStylesheets().add(estilos.toExternalForm());
 
-        stage.setTitle("SGA | Sistema de Gestión de Alojamiento");
-        stage.setMinWidth(960);
-        stage.setMinHeight(680);
+        stage.setTitle("SGA | Sistema de Gestión de Alojamiento · DEMO");
+        stage.setMinWidth(1040);
+        stage.setMinHeight(720);
         stage.setScene(escena);
         stage.show();
     }

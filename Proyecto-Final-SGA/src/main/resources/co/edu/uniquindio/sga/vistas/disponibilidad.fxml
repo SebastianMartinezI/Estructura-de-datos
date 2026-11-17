@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="co.edu.uniquindio.sga.interfaz.controladores.DisponibilidadController"
+            fitToWidth="true"
+            hbarPolicy="NEVER"
+            styleClass="reservas-scroll">
+
+    <content>
+        <VBox spacing="16" styleClass="reservas-root">
+
+            <!-- Encabezado -->
+            <HBox alignment="CENTER_LEFT" spacing="12">
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <Label text="CONSULTA DE ALOJAMIENTO"
+                           styleClass="eyebrow"/>
+                    <Label text="Disponibilidad de apartamentos"
+                           styleClass="screen-title"/>
+                    <Label text="Encuentra apartamentos libres según las fechas y características de tu grupo."
+                           wrapText="true"
+                           styleClass="screen-subtitle"/>
+                </VBox>
+
+                <Label text="DATOS TEMPORALES · DEMO"
+                       styleClass="demo-badge"/>
+            </HBox>
+
+            <!-- Fechas y criterios -->
+            <VBox spacing="12" styleClass="section-card">
+                <Label text="1. Criterios de búsqueda"
+                       styleClass="section-title"/>
+
+                <GridPane hgap="12" vgap="9">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="33.33" hgrow="ALWAYS"/>
+                        <ColumnConstraints percentWidth="33.33" hgrow="ALWAYS"/>
+                        <ColumnConstraints percentWidth="33.34" hgrow="ALWAYS"/>
+                    </columnConstraints>
+
+                    <Label text="Fecha de entrada"
+                           styleClass="field-label"
+                           GridPane.rowIndex="0"
+                           GridPane.columnIndex="0"/>
+
+                    <Label text="Fecha de salida"
+                           styleClass="field-label"
+                           GridPane.rowIndex="0"
+                           GridPane.columnIndex="1"/>
+
+                    <Label text="Ordenar resultados"
+                           styleClass="field-label"
+                           GridPane.rowIndex="0"
+                           GridPane.columnIndex="2"/>
+
+                    <DatePicker fx:id="entradaPicker"
+                                maxWidth="Infinity"
+                                GridPane.rowIndex="1"
+                                GridPane.columnIndex="0"/>
+
+                    <DatePicker fx:id="salidaPicker"
+                                maxWidth="Infinity"
+                                GridPane.rowIndex="1"
+                                GridPane.columnIndex="1"/>
+
+                    <ComboBox fx:id="ordenCombo"
+                              maxWidth="Infinity"
+                              GridPane.rowIndex="1"
+                              GridPane.columnIndex="2"/>
+                </GridPane>
+
+                <Label text="La fecha de salida no se cuenta como noche de alojamiento."
+                       styleClass="helper-text"/>
+
+                <Button text="Consultar disponibilidad"
+                        onAction="#consultarDisponibilidad"
+                        styleClass="primary-button"
+                        maxWidth="Infinity"/>
+            </VBox>
+
+            <!-- Ocupantes -->
+            <VBox spacing="12" styleClass="section-card">
+                <Label text="2. Personas que se alojarán"
+                       styleClass="section-title"/>
+
+                <Label text="Agrega cada ocupante con su fecha de nacimiento. Los menores cuentan para la capacidad."
+                       wrapText="true"
+                       styleClass="helper-text"/>
+
+                <GridPane hgap="12" vgap="9">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="55" hgrow="ALWAYS"/>
+                        <ColumnConstraints percentWidth="45" hgrow="ALWAYS"/>
+                    </columnConstraints>
+
+                    <Label text="Nombre completo"
+                           styleClass="field-label"
+                           GridPane.rowIndex="0"
+                           GridPane.columnIndex="0"/>
+
+                    <Label text="Fecha de nacimiento"
+                           styleClass="field-label"
+                           GridPane.rowIndex="0"
+                           GridPane.columnIndex="1"/>
+
+                    <TextField fx:id="nombreOcupanteField"
+                               promptText="Nombre del ocupante"
+                               GridPane.rowIndex="1"
+                               GridPane.columnIndex="0"/>
+
+                    <DatePicker fx:id="nacimientoOcupantePicker"
+                                promptText="Fecha de nacimiento"
+                                maxWidth="Infinity"
+                                GridPane.rowIndex="1"
+                                GridPane.columnIndex="1"/>
+                </GridPane>
+
+                <HBox spacing="8">
+                    <Button text="Agregar persona"
+                            onAction="#agregarOcupante"
+                            styleClass="secondary-button"/>
+
+                    <Button text="Quitar seleccionada"
+                            onAction="#quitarOcupante"
+                            styleClass="quiet-button"/>
+                </HBox>
+
+                <ListView fx:id="ocupantesListView"
+                          prefHeight="115"
+                          maxHeight="130">
+                    <placeholder>
+                        <Label text="Agrega las personas para realizar la consulta."
+                               styleClass="helper-text"/>
+                    </placeholder>
+                </ListView>
+
+                <Label fx:id="cantidadPersonasLabel"
+                       text="Personas alojadas: 0"
+                       styleClass="inline-status"/>
+            </VBox>
+
+            <!-- Resultados -->
+            <VBox spacing="12" styleClass="section-card">
+                <Label text="3. Apartamentos disponibles"
+                       styleClass="section-title"/>
+
+                <Label fx:id="resultadoLabel"
+                       text="Completa los criterios y consulta la disponibilidad."
+                       wrapText="true"
+                       styleClass="inline-status"/>
+
+                <TableView fx:id="tablaResultados"
+                           prefHeight="270"
+                           minHeight="210">
+                    <placeholder>
+                        <Label text="Los resultados de la búsqueda aparecerán aquí."
+                               styleClass="helper-text"/>
+                    </placeholder>
+
+                    <columns>
+                        <TableColumn fx:id="codigoColumn"
+                                     text="Código"
+                                     prefWidth="75"/>
+
+                        <TableColumn fx:id="nombreColumn"
+                                     text="Apartamento"
+                                     prefWidth="125"/>
+
+                        <TableColumn fx:id="ubicacionColumn"
+                                     text="Ubicación"
+                                     prefWidth="105"/>
+
+                        <TableColumn fx:id="capacidadColumn"
+                                     text="Capacidad"
+                                     prefWidth="75"/>
+
+                        <TableColumn fx:id="dormitoriosColumn"
+                                     text="Dormitorios"
+                                     prefWidth="80"/>
+
+                        <TableColumn fx:id="estadoColumn"
+                                     text="Estado"
+                                     prefWidth="110"/>
+
+                        <TableColumn fx:id="precioColumn"
+                                     text="Precio total"
+                                     prefWidth="120"/>
+                    </columns>
+                </TableView>
+            </VBox>
+
+            <Label text="DEMO: los apartamentos y tarifas son datos temporales. Esta consulta no registra reservas ni pagos."
+                   wrapText="true"
+                   styleClass="demo-disclaimer"/>
+
+        </VBox>
+    </content>
+</ScrollPane>
