@@ -110,3 +110,155 @@
     -fx-text-fill: #718096;
     -fx-font-size: 11px;
 }
+
+/* Pantalla funcional de reservas: estilos de presentación, sin lógica de negocio. */
+.reservas-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+}
+
+.reservas-root {
+    -fx-padding: 24 26 28 26;
+    -fx-background-color: #f3f6fb;
+}
+
+.screen-title {
+    -fx-text-fill: #172a45;
+    -fx-font-size: 25px;
+    -fx-font-weight: bold;
+}
+
+.screen-subtitle {
+    -fx-text-fill: #64748b;
+    -fx-font-size: 12px;
+}
+
+.demo-badge {
+    -fx-text-fill: #805b16;
+    -fx-background-color: #fff3d6;
+    -fx-background-radius: 9;
+    -fx-padding: 8 11;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
+.section-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-padding: 16;
+    -fx-effect: dropshadow(gaussian, rgba(17, 37, 61, 0.055), 9, 0, 0, 2);
+}
+
+.section-title {
+    -fx-text-fill: #20334b;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.field-label {
+    -fx-text-fill: #475569;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.helper-text {
+    -fx-text-fill: #64748b;
+    -fx-font-size: 11px;
+}
+
+.inline-status {
+    -fx-text-fill: #315d82;
+    -fx-background-color: #eef5fb;
+    -fx-background-radius: 7;
+    -fx-padding: 8 10;
+    -fx-font-size: 11px;
+}
+
+.primary-button {
+    -fx-background-color: #1d5d8f;
+    -fx-background-radius: 7;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 15;
+    -fx-cursor: hand;
+}
+
+.primary-button:hover {
+    -fx-background-color: #174b74;
+}
+
+.secondary-button {
+    -fx-background-color: #e8f0f7;
+    -fx-background-radius: 7;
+    -fx-text-fill: #234c70;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 12;
+    -fx-cursor: hand;
+}
+
+.secondary-button:hover {
+    -fx-background-color: #d9e7f3;
+}
+
+.quiet-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #64748b;
+    -fx-font-size: 11px;
+    -fx-padding: 8 10;
+    -fx-cursor: hand;
+}
+
+.metric-card {
+    -fx-background-color: #f5f8fc;
+    -fx-background-radius: 8;
+    -fx-padding: 10 12;
+}
+
+.metric-label {
+    -fx-text-fill: #64748b;
+    -fx-font-size: 9px;
+    -fx-font-weight: bold;
+}
+
+.metric-value {
+    -fx-text-fill: #173b5d;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.metric-value-small {
+    -fx-text-fill: #173b5d;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.result-message {
+    -fx-text-fill: #315d49;
+    -fx-background-color: #edf7f0;
+    -fx-background-radius: 7;
+    -fx-padding: 9 11;
+    -fx-font-size: 11px;
+}
+
+.demo-disclaimer {
+    -fx-text-fill: #805b16;
+    -fx-background-color: #fff8e8;
+    -fx-background-radius: 8;
+    -fx-padding: 10 12;
+    -fx-font-size: 10px;
+}
+
+.reservas-root .text-field,
+.reservas-root .date-picker,
+.reservas-root .combo-box {
+    -fx-font-size: 11px;
+}
+
+.reservas-root .table-view {
+    -fx-font-size: 10px;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 6;
+}

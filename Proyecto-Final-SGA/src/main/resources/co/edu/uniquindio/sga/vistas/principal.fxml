@@ -49,12 +49,12 @@
         <HBox alignment="CENTER_LEFT" spacing="12" styleClass="topbar">
             <Label text="SGA | Aparta-Suites UQ" styleClass="topbar-title" />
             <Region HBox.hgrow="ALWAYS" />
-            <Label text="Prototipo de navegación" styleClass="topbar-tag" />
+            <Label fx:id="etiquetaSuperior" text="DATOS TEMPORALES · DEMO" styleClass="topbar-tag" />
         </HBox>
     </top>
 
     <center>
-        <StackPane alignment="CENTER" styleClass="content">
+        <StackPane fx:id="contenidoPrincipal" alignment="CENTER" styleClass="content">
             <VBox alignment="CENTER_LEFT" spacing="16" maxWidth="720" styleClass="content-card">
                 <Label text="SISTEMA DE GESTIÓN DE ALOJAMIENTO" styleClass="eyebrow" />
                 <Label fx:id="tituloModulo" text="Inicio" wrapText="true" styleClass="section-title" />

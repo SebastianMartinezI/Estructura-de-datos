@@ -1,6 +1,8 @@
 # Checklist trazable a Proyecto Final ETD - 2026-2
 Marcar un requisito únicamente si está implementado, probado y conectado a la GUI.
 
+Estado de interfaz: existe una primera pantalla JavaFX DEMO para registrar solicitudes pendientes y visualizar su cotización. No se marca todavía el requisito completo de panel de reservas porque faltan confirmación, cancelación y conexión de la cola externa desde la GUI.
+
 ## Modelo y reservas
 - [ ] Perfil huésped: nombre, documento, nacimiento, teléfono, correo, foto opcional.
 - [ ] Titular, ocupantes y nacimiento; menores de 6 cupo gratis.
