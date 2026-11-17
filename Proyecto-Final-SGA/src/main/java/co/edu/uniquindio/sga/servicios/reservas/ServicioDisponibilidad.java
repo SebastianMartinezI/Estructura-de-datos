@@ -134,6 +134,22 @@ public final class ServicioDisponibilidad {
         return porId.tamano();
     }
 
+    /**
+     * Número de reservas registradas para un apartamento,
+     * independientemente de su estado.
+     *
+     * @param apartamento apartamento que se desea consultar
+     * @return cantidad de reservas registradas; cero si no tiene reservas
+     */
+    public synchronized int cantidadReservasPorApartamento(Apartamento apartamento) {
+        Objects.requireNonNull(apartamento, "El apartamento es obligatorio.");
+
+        IndiceApartamento indice = porApartamento.buscar(
+                new IndiceApartamento(apartamento.getCodigo()));
+
+        return indice == null ? 0 : indice.reservas.tamano();
+    }
+
     /** Índice privado ordenado por código de apartamento. */
     private static final class IndiceApartamento implements Comparable<IndiceApartamento> {
         private final String codigo;
