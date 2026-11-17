@@ -161,4 +161,8 @@ public final class PreparacionService {
     public Clock obtenerReloj() {
         return reloj;
     }
+    public Iterable<TareaPreparacion> consultarTareas() {
+        actualizarOrden();
+        return () -> pendientes.iterator();
+    }
 }
