@@ -10,10 +10,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
-
+import co.edu.uniquindio.sga.interfaz.controladores.DisponibilidadController;
 import java.io.IOException;
 import java.util.Objects;
-
+import co.edu.uniquindio.sga.interfaz.controladores.DisponibilidadController;
 /**
  * Controla la navegación principal y carga las vistas de cada módulo.
  * Las reglas de negocio permanecen en los servicios inyectados en el contexto.
@@ -23,6 +23,7 @@ public final class PrincipalController {
     private final ContextoAplicacion contexto;
     private Node panelInformativo;
     private Node vistaReservas;
+    private Node vistaDisponibilidad;
 
     @FXML private StackPane contenidoPrincipal;
     @FXML private Label tituloModulo;
@@ -57,6 +58,10 @@ public final class PrincipalController {
             mostrarVistaReservas();
             return;
         }
+        if (modulo == Modulo.DISPONIBILIDAD) {
+            mostrarVistaDisponibilidad();
+            return;
+        }
 
         contenidoPrincipal.getChildren().setAll(panelInformativo);
         tituloModulo.setText(modulo.titulo);
@@ -68,6 +73,47 @@ public final class PrincipalController {
                 ? "DATOS TEMPORALES · DEMO"
                 : "MÓDULO EN DESARROLLO");
     }
+
+    private void mostrarVistaDisponibilidad() {
+        try {
+            if (vistaDisponibilidad == null) {
+
+                FXMLLoader cargador = new FXMLLoader(
+                        getClass().getResource(
+                                "/co/edu/uniquindio/sga/vistas/disponibilidad.fxml"
+                        )
+                );
+
+                cargador.setControllerFactory(tipo -> {
+                    if (tipo == DisponibilidadController.class) {
+                        return new DisponibilidadController(contexto);
+                    }
+
+                    throw new IllegalArgumentException(
+                            "No existe una fábrica de controladores para "
+                                    + tipo.getName()
+                    );
+                });
+
+                vistaDisponibilidad = cargador.load();
+            }
+
+            contenidoPrincipal.getChildren().setAll(vistaDisponibilidad);
+            etiquetaSuperior.setText("DISPONIBILIDAD · DATOS TEMPORALES");
+
+        } catch (IOException | RuntimeException excepcion) {
+
+            excepcion.printStackTrace();
+
+            mostrarError(
+                    "No se pudo abrir Disponibilidad",
+                    excepcion.getMessage() == null
+                            ? "Verifica disponibilidad.fxml y su controlador."
+                            : excepcion.getMessage()
+            );
+        }
+    }
+
 
     private void mostrarVistaReservas() {
         try {

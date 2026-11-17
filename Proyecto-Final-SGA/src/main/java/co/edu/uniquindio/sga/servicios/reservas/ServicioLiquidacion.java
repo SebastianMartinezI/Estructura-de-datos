@@ -43,10 +43,52 @@ public final class ServicioLiquidacion {
      */
     public LiquidacionReserva cotizar(Reserva reserva) {
         Objects.requireNonNull(reserva, "La reserva es obligatoria");
-        ListaDoblementeEnlazada<DetalleNoche> detalles = new ListaDoblementeEnlazada<>();
+
+        ListaDoblementeEnlazada<DetalleNoche> detalles =
+                new ListaDoblementeEnlazada<>();
+
         BigDecimal total = liquidarRecursivamente(
-                reserva, reserva.getEstancia().getEntrada(), detalles);
+                reserva.getApartamento(),
+                reserva.getEstancia(),
+                reserva.getOcupantes(),
+                reserva.getCantidadOcupantes(),
+                reserva.getEstancia().getEntrada(),
+                detalles
+        );
+
         return new LiquidacionReserva(reserva.getId(), detalles, total);
+    }
+
+    /**
+     * Calcula el precio total sin crear ni registrar una reserva.
+     */
+    public BigDecimal cotizarTotal(
+            Apartamento apartamento,
+            Estancia estancia,
+            Iterable<Ocupante> ocupantes) {
+
+        Objects.requireNonNull(apartamento, "El apartamento es obligatorio");
+        Objects.requireNonNull(estancia, "La estancia es obligatoria");
+        Objects.requireNonNull(ocupantes, "Los ocupantes son obligatorios");
+
+        int cantidadOcupantes = contarOcupantes(ocupantes);
+
+        if (cantidadOcupantes == 0) {
+            throw new IllegalArgumentException(
+                    "Debe existir al menos un ocupante");
+        }
+
+        ListaDoblementeEnlazada<DetalleNoche> detalles =
+                new ListaDoblementeEnlazada<>();
+
+        return liquidarRecursivamente(
+                apartamento,
+                estancia,
+                ocupantes,
+                cantidadOcupantes,
+                estancia.getEntrada(),
+                detalles
+        );
     }
 
     /**
@@ -54,9 +96,13 @@ public final class ServicioLiquidacion {
      * Cada llamada recursiva añade una noche en el orden cronológico.
      */
     private BigDecimal liquidarRecursivamente(
-            Reserva reserva, LocalDate noche,
+            Apartamento apartamento,
+            Estancia estancia,
+            Iterable<Ocupante> ocupantes,
+            int totalOcupantes,
+            LocalDate noche,
             ListaDoblementeEnlazada<DetalleNoche> detalles) {
-        Estancia estancia = reserva.getEstancia();
+
         if (!noche.isBefore(estancia.getSalida())) {
             return BigDecimal.ZERO;
         }
@@ -64,26 +110,66 @@ public final class ServicioLiquidacion {
         Temporada temporada = Objects.requireNonNull(
                 selectorTemporada.temporadaEn(noche),
                 "El selector no puede devolver una temporada nula");
-        Apartamento apartamento = reserva.getApartamento();
+
         BigDecimal tarifa = apartamento.tarifaPorPersonaNoche(temporada);
-        int pagadores = contarPagadores(reserva, noche);
-        BigDecimal subtotal = tarifa.multiply(BigDecimal.valueOf(pagadores));
+
+        int pagadores = contarPagadores(
+                ocupantes,
+                estancia.getEntrada(),
+                noche
+        );
+
+        BigDecimal subtotal = tarifa.multiply(
+                BigDecimal.valueOf(pagadores));
+
         detalles.agregarUltimo(new DetalleNoche(
-                noche, temporada, tarifa, reserva.getCantidadOcupantes(), pagadores, subtotal));
+                noche,
+                temporada,
+                tarifa,
+                totalOcupantes,
+                pagadores,
+                subtotal
+        ));
 
         return subtotal.add(liquidarRecursivamente(
-                reserva, noche.plusDays(1), detalles));
+                apartamento,
+                estancia,
+                ocupantes,
+                totalOcupantes,
+                noche.plusDays(1),
+                detalles
+        ));
     }
 
-    private int contarPagadores(Reserva reserva, LocalDate noche) {
-        LocalDate fechaReferencia = criterioEdad == CriterioEdad.POR_NOCHE
-                ? noche : reserva.getEstancia().getEntrada();
+    private int contarOcupantes(Iterable<Ocupante> ocupantes) {
+        int cantidad = 0;
+
+        for (Ocupante ocupante : ocupantes) {
+            Objects.requireNonNull(ocupante, "Un ocupante no puede ser nulo");
+            cantidad++;
+        }
+
+        return cantidad;
+    }
+
+    private int contarPagadores(
+            Iterable<Ocupante> ocupantes,
+            LocalDate entrada,
+            LocalDate noche) {
+
+        LocalDate fechaReferencia =
+                criterioEdad == CriterioEdad.POR_NOCHE
+                        ? noche
+                        : entrada;
+
         int pagadores = 0;
-        for (Ocupante ocupante : reserva.getOcupantes()) {
+
+        for (Ocupante ocupante : ocupantes) {
             if (ocupante.edadEn(fechaReferencia) >= EDAD_MINIMA_PAGO) {
                 pagadores++;
             }
         }
+
         return pagadores;
     }
 }
